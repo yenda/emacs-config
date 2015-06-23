@@ -1,0 +1,350 @@
+** Org-mode
+*** Publishing
+
+    Let's configure the publishing part of org-mode. The first
+    org-mode files we want to publish are in =~/desktop/org/{project}=,
+    and we want to publish them in =~/var/public_html/{project}= for
+    now.
+
+    Few org-export and org-html configuration.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package htmlize
+        :ensure t
+        :defer t)
+      ;;      (setq org-html-head "<link rel=\"stylesheet\" type=\"text/css\" hrefl=\"css/stylesheet.css\" />")
+      (setq org-html-include-timestamps nil)
+      ;; (setq org-html-htmlize-output-type 'css)
+      (setq org-html-head-include-default-style nil)
+    #+END_SRC
+
+    And the projects.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package ox-publish)
+      ;; (use-package ox-rss)
+
+      ;; Define some variables to write less :D
+      (setq sbr-base-directory (expand-file-name "sbr" org-sites-directory)
+            sbr-publishing-directory (expand-file-name "sbr" org-publish-folder)
+            znk-base-directory (expand-file-name "zenika" org-sites-directory)
+            znk-publishing-directory (expand-file-name "zenika" org-publish-folder)
+            vdf-base-directory (expand-file-name "vdf" org-sites-directory)
+            vdf-site-directory (expand-file-name "blog" sites-folder)
+            vdf-publishing-directory (expand-file-name "posts" (expand-file-name "content" vdf-site-directory))
+            vdf-static-directory (expand-file-name "static" vdf-site-directory)
+            vdf-css-publishing-directory (expand-file-name "css" vdf-static-directory)
+            vdf-assets-publishing-directory vdf-static-directory)
+
+      ;; Project
+      (setq org-publish-project-alist
+            `(("sbr-notes"
+               :base-directory ,sbr-base-directory
+               :base-extension "org"
+               :publishing-directory ,sbr-publishing-directory
+               :makeindex t
+               :exclude "FIXME"
+               :recursive t
+               :htmlized-source t
+               :publishing-function org-html-publish-to-html
+               :headline-levels 4
+               :auto-preamble t
+               :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/style.css\" />"
+               :html-preamble "<div id=\"nav\">
+      <ul>
+      <li><a href=\"/\" class=\"home\">Home</a></li>
+      </ul>
+      </div>"
+               :html-postamble "<div id=\"footer\">
+      %a %C %c
+      </div>")
+              ("sbr-static"
+               :base-directory ,sbr-base-directory
+               :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
+               :publishing-directory ,sbr-publishing-directory
+               :recursive t
+               :publishing-function org-publish-attachment
+               )
+              ("sbr" :components ("sbr-notes" "sbr-static"))
+              ("vdf-notes"
+               :base-directory ,vdf-base-directory
+               :base-extension "org"
+               :publishing-directory ,vdf-publishing-directory
+               :exclude "FIXME"
+               :section-numbers nil
+               :with-toc nil
+               :with-drawers t
+               :htmlized-source t
+               :publishing-function org-html-publish-to-html
+               :headline-levels 4
+               :body-only t)
+              ("vdf-static-css"
+               :base-directory ,vdf-base-directory
+               :base-extension "css"
+               :publishing-directory ,vdf-css-publishing-directory
+               :recursive t
+               :publishing-function org-publish-attachment
+               )
+              ("vdf-static-assets"
+               :base-directory ,vdf-base-directory
+               :base-extension "png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
+               :publishing-directory ,vdf-assets-publishing-directory
+               :recursive t
+               :publishing-function org-publish-attachment
+               )
+              ("vdf" :components ("vdf-notes" "vdf-static-css" "vdf-static-assets"))
+              ("znk-notes"
+               :base-directory ,znk-base-directory
+               :base-extension "org"
+               :publishing-directory ,znk-publishing-directory
+               :makeindex t
+               :exclude "FIXME"
+               :recursive t
+               :htmlized-source t
+               :publishing-function org-html-publish-to-html
+               :headline-levels 4
+               :auto-preamble t
+               :html-head "<link rel=\"stylesheet\" type=\"text/css\" href=\"style/style.css\" />"
+               :html-preamble "<div id=\"nav\">
+      <ul>
+      <li><a href=\"/\" class=\"home\">Home</a></li>
+      </ul>
+      </div>"
+               :html-postamble "<div id=\"footer\">
+      %a %C %c
+      </div>")
+              ("znk-static"
+               :base-directory ,znk-base-directory
+               :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
+               :publishing-directory ,znk-publishing-directory
+               :recursive t
+               :publishing-function org-publish-attachment
+               )
+              ("znk" :components ("znk-notes" "znk-static"))
+              ))
+    #+END_SRC
+
+*** Protocol
+
+    Trying out org-protocol based on
+    http://oremacs.com/2015/01/07/org-protocol-1/ and
+    http://oremacs.com/2015/01/08/org-protocol-2/.
+
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package org-capture)
+      (use-package org-protocol)
+      (use-package async
+        :ensure t)
+      (setq org-protocol-default-template-key "l")
+      (push '("l" "Link" entry (function org-handle-link)
+              "* TODO %(org-wash-link)\nAdded: %U\n%(org-link-hooks)\n%?")
+            org-capture-templates)
+
+      (defun org-wash-link ()
+        (let ((link (caar org-stored-links))
+              (title (cadar org-stored-links)))
+          (setq title (replace-regexp-in-string
+                       " - Stack Overflow" "" title))
+          (org-make-link-string link title)))
+
+      (defvar org-link-hook nil)
+
+      (defun org-link-hooks ()
+        (prog1
+            (mapconcat #'funcall
+                       org-link-hook
+                       "\n")
+          (setq org-link-hook)))
+
+      (defun org-handle-link ()
+        (let ((link (caar org-stored-links))
+              file)
+          (cond ((string-match "^https://www.youtube.com/" link)
+                 (org-handle-link-youtube link))
+                ((string-match (regexp-quote
+                                "http://stackoverflow.com/") link)
+                 (find-file ((expand-file-name org-stackoverflow-file org-notes-directory)))
+                 (goto-char (point-min))
+                 (re-search-forward "^\\*+ +Questions" nil t))
+                (t
+                 (find-file ((expand-file-name org-web-article-file org-notes-directory)))
+                 (goto-char (point-min))
+                 (re-search-forward "^\\*+ +Articles" nil t)))))
+
+      (defun org-handle-link-youtube (link)
+        (lexical-let*
+            ((file-name (org-trim
+                         (shell-command-to-string
+                          (concat
+                           "youtube-dl \""
+                           link
+                           "\""
+                           " -o \"%(title)s.%(ext)s\" --get-filename"))))
+             (dir videos-folder)
+             (full-name
+              (expand-file-name file-name dir)))
+          (add-hook 'org-link-hook
+                    (lambda ()
+                      (concat
+                       (org-make-link-string dir dir)
+                       "\n"
+                       (org-make-link-string full-name file-name))))
+          (async-shell-command
+           (format "youtube-dl \"%s\" -o \"%s\"" link full-name))
+          (find-file (org-expand "ent.org"))
+          (goto-char (point-min))
+          (re-search-forward "^\\*+ +videos" nil t)))
+    #+END_SRC
+
+
+
+
+** Others
+*** Evil
+
+    I come from a [[http://vim.org][vim]] background and the modal editor comes with some
+    really good stuff. [[http://www.emacswiki.org/Evil][Evil]] is an extensible vi layer for Emacs,
+    exacty what we need. It also few /extensions/.
+
+    #+BEGIN_SRC emacs-lisp
+      ;;; Load undo-tree before evil for the :bind
+      (use-package undo-tree
+        :ensure t
+        :bind (("C-*" . undo-tree-undo)))
+      (use-package evil
+        :ensure t
+        :init
+        (progn
+          (define-key vde/toggle-map "e" #'evil-mode)))
+    #+END_SRC
+
+    Let's change the default cursor colours to easily identify wich
+    mode we are in.
+
+#+BEGIN_SRC emacs-lisp
+  (setq evil-emacs-state-cursor '("red" box))
+  (setq evil-normal-state-cursor '("green" box))
+  (setq evil-visual-state-cursor '("orange" box))
+  (setq evil-insert-state-cursor '("red" bar))
+  (setq evil-replace-state-cursor '("red" bar))
+  (setq evil-operator-state-cursor '("red" hollow))
+#+END_SRC
+
+    And define some /internals/.
+
+#+BEGIN_SRC emacs-lisp
+  (setq evil-search-module 'evil-search)
+#+END_SRC
+
+**** evil-leader
+
+     The [[https://github.com/cofi/evil-leader][evil-leader]] extension provides the <leader> feature from Vim
+     that provides an easy way to bind keys under a variable prefix
+     key.
+
+     #+BEGIN_SRC emacs-lisp
+       (use-package evil-leader
+         :ensure t
+         :requires evil
+         :init
+         (global-evil-leader-mode t))
+
+       (evil-leader/set-leader ",")
+       (evil-leader/set-key
+         "e" 'find-file
+         "b" 'switch-to-buffer
+         "k" 'kill-buffer)
+     #+END_SRC
+
+
+**** evil-args
+
+     The [[https://github.com/wcsmith/evil-args][evil-args]] extension provides motions and text objects for
+     delimited arguments in Evil.
+
+
+     #+BEGIN_SRC emacs-lisp
+       (use-package evil-args
+         :ensure t
+         :requires evil
+         :config
+         (progn
+           ;; bind evil-args text objects
+           (define-key evil-inner-text-objects-map "a" 'evil-inner-arg)
+           (define-key evil-outer-text-objects-map "a" 'evil-outer-arg)
+           ;; bind evil-forward/backward-args
+           (define-key evil-normal-state-map "L" 'evil-forward-arg)
+           (define-key evil-normal-state-map "H" 'evil-backward-arg)
+           (define-key evil-motion-state-map "L" 'evil-forward-arg)
+           (define-key evil-motion-state-map "H" 'evil-backward-arg)
+           ;; bind evil-jump-out-args
+           (define-key evil-normal-state-map "K" 'evil-jump-out-args)
+           ))
+     #+END_SRC
+
+*** raindow-identifiers
+
+    I read an intersting article about [[https://medium.com/p/3a6db2743a1e/][how to make syntax highlighting more useful]]
+    and I really like the concept. And guess what, there's a mode for that.
+
+    #+BEGIN_SRC emacs-lisp
+      (use-package rainbow-identifiers
+                   :ensure t
+                   :init
+                   (add-hook 'prog-mode-hook
+                             (lambda () (rainbow-identifiers-mode))))
+    #+END_SRC
+
+*** Smart-mode-line
+
+We are going to smart-mode-line because powerline is for hipsters
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-mode-line
+    :ensure t
+    :config
+    (load-theme 'smart-mode-line-light t)
+    (sml/setup))
+#+END_SRC
+
+Adding battery mode
+
+#+BEGIN_SRC emacs-lisp
+  (display-battery-mode 1)
+#+END_SRC
+
+Adding clock
+
+#+BEGIN_SRC emacs-lisp
+  (defface egoge-display-time
+    '((((type x w32 mac))
+       ;; #060525 is the background colour of my default face.
+       (:foreground "#060525" :inherit bold))
+      (((type tty))
+       (:foreground "blue")))
+    "Face used to display the time in the mode line.")
+
+  ;; This causes the current time in the mode line to be displayed in
+  ;; `egoge-display-time-face' to make it stand out visually.
+  (setq display-time-string-forms
+        '((propertize (concat " " 24-hours ":" minutes " ")
+                      'face 'egoge-display-time)))
+#+END_SRC
+
+
+
+  ;; (use-package circe
+  ;;   :ensure t
+  ;;   :config
+  ;;   (progn
+  ;;     (use-package helm-circe
+  ;;         :ensure t)
+  ;;     (setq circe-network-options
+  ;;           `(("Freenode"
+  ;;              :nick "yenda"
+  ;;              :channels ("#emacs" "#emacs-circe" "#lisp" "#python" "#mesos" "#ansible" "guix")
+  ;;              :nickserv-password my-nickserv-password)))
+  ;;     (setq circe-reduce-lurker-spam t)
+  ;;     (circe-set-display-handler "JOIN" (lambda (&rest ignored) nil))))
+  ;; ;(circe "Freenode")
