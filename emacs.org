@@ -766,6 +766,7 @@ One feature of IntelliJ that really rocks is the =C-w= shortcuts that select "in
       (define-key vde/launcher-map "u" #'mu4e-update-mail-and-index)
     #+END_SRC
 
+
 *** TODO Scrolling
 
 Ensuring that =M-v= always undoes =C-v=, so you can go back exactly where you were.
@@ -1476,10 +1477,6 @@ And =bash-completion= to make things even better
 *** Git
 
     #+begin_src emacs-lisp
-      (use-package git-commit-mode
-        :ensure t)
-      (use-package git-rebase-mode
-        :ensure t)
       (use-package gitignore-mode
         :ensure t)
       (use-package gitconfig-mode
@@ -1508,18 +1505,8 @@ Ediff with magit is fabulous, but lets deactivate the popup window that caused m
   (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 #+END_SRC
 
-***** Magit git-svn integration
 
-      At work, I use ~git-svn~ to be able to use git locally but integrating in the
-      subversion they use. Integrating ~magit~ and ~git-svn~ is a bonus but, as it
-      exists, let's do it :).
 
-      #+begin_src emacs-lisp
-        (use-package magit-svn
-          :ensure t)
-      #+end_src
-
-      The /quick key/ to get the ~magit-svn~ menu is ~N~.
 **** git fringe decoration
 
      #+begin_src emacs-lisp
@@ -2426,27 +2413,21 @@ Practice touch/speed typing in emacs
       :ensure t)
 #+END_SRC
 
-** Load config file
-
-#+BEGIN_SRC emacs-lisp
-  (find-file "~/.emacs.d/emacs.org")
-#+END_SRC
-
 ** Scala : ensime
 
 #+BEGIN_SRC emacs-lisp
-  ;; Restart emacs and do `M-x package-install [RETURN] ensime [RETURN]`
-  ;; To keep up-to-date, do `M-x list-packages [RETURN] U [RETURN] x [RETURN]`
+    ;; Restart emacs and do `M-x package-install [RETURN] ensime [RETURN]`
+    ;; To keep up-to-date, do `M-x list-packages [RETURN] U [RETURN] x [RETURN]`
 
-  ;; If necessary, make sure "sbt" and "scala" are in the PATH environment
-  ;; (setenv "PATH" (concat "/path/to/sbt/bin:" (getenv "PATH")))
-  ;; (setenv "PATH" (concat "/path/to/scala/bin:" (getenv "PATH")))
-  ;;
-  ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance: 
-  ;; (setq exec-path (append exec-path '("/usr/local/bin")))
+    ;; If necessary, make sure "sbt" and "scala" are in the PATH environment
+  (setenv "PATH" (concat "/path/to/sbt/bin:" (getenv "PATH")))
+  (setenv "PATH" (concat "/path/to/scala/bin:" (getenv "PATH")))
+    ;;
+    ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance: 
+  (setq exec-path (append exec-path '("/usr/local/bin")))
 
-;;  (require 'ensime)
-;;  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+  (require 'ensime)
+  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 #+END_SRC
 
 ** Terminal
