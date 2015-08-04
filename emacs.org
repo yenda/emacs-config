@@ -2369,7 +2369,7 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 * Experimentations [0%]
 ** Guru-mode
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package guru-mode
       :ensure t
       :config
