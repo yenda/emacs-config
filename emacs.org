@@ -69,13 +69,6 @@ The [[file:init.el][Init file]] only loads orgmode and tangle this file into an 
 
 #+BEGIN_SRC emacs-lisp
     (setq
-     ;; General
-     ;; TODO use xdg to get these
-     desktop-folder (substitute-env-in-file-name "$HOME/desktop")
-     videos-folder (expand-file-name "videos" desktop-folder)
-     downloads-folder (expand-file-name "downloads" desktop-folder)
-     music-folder (expand-file-name "music" desktop-folder)
-     pictures-folder (expand-file-name "pictures" desktop-folder)
      ;; Orgmode related
      org-root-directory (substitute-env-in-file-name "$HOME/org")
      org-todos-directory-name "todos"
@@ -143,7 +136,6 @@ the splash-screen.
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (setq inhibit-splash-screen t)
-  (toggle-frame-fullscreen)
 #+end_src
 
 We want to see somewhere the column and line number, and also highlight the
@@ -158,14 +150,6 @@ current line to see it easily.
 
 #+begin_src emacs-lisp
     (global-visual-line-mode 1)
-
-    (use-package nyan-mode
-        :ensure t
-        :config
-        (progn
-          (setq nyan-old-car-mode-line-position 1)
-          (nyan-mode)
-          (nyan-start-animation)))
 #+end_src
 
 *** Fringe decorations
@@ -195,7 +179,7 @@ Here I set up git diffs and buffer position in the fringe.
 
 *** Font
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (add-to-list 'default-frame-alist '(font . "Inconsolata for Powerline Medium" ))
   (set-face-attribute 'default t :font "Inconsolata for Powerline Medium" )
   (set-default-font "Inconsolata for Powerline Medium")
@@ -204,7 +188,7 @@ Here I set up git diffs and buffer position in the fringe.
 *** Powerline
 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package powerline
                :ensure t
                :init
@@ -839,8 +823,7 @@ That says it all, it's kind of a must.
 =async.el= is a module for doing asynchronous processing in Emacs. Let's load it as it's gonna be useful.
 
     #+BEGIN_SRC emacs-lisp
-      (use-package async
-        :ensure t)
+      (use-package async)
     #+END_SRC
 
 *** TODO async-dired
@@ -1321,7 +1304,7 @@ We inverst =Tab= and =C-z= because we execute actions more often than we select 
 
     #+begin_src emacs-lisp
       (use-package helm
-          :ensure t
+:ensure t
           :init
           ()
           :config
@@ -1365,28 +1348,6 @@ We inverst =Tab= and =C-z= because we execute actions more often than we select 
 
     Because it can be hard to remember all keybindings, let's use
     =helm-descbinds=.
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm-descbinds
-        :ensure t
-        :defer t
-        :bind ("C-h b" . helm-descbinds))
-    #+END_SRC
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm-gtags
-        :ensure t)
-      ;; (helm-gtags-mode 1)
-    #+END_SRC
-
-Use =ack= instead of =grep= when available
-
-#+BEGIN_SRC emacs-lisp
-  (when (executable-find "ack-grep")
-    (setq helm-grep-default-command "ack-grep -Hn --no-group --no-color %e %p %f"
-          helm-grep-default-recurse-command "ack-grep -H --no-group --no-color %e %p %f"))
-
-#+END_SRC
 
 
 Adding wgrep to make =grep= buffers editable
@@ -1433,12 +1394,6 @@ And =bash-completion= to make things even better
                 (define-key eshell-mode-map (kbd "M-r")  'helm-eshell-history)))
 #+END_SRC
 
-*** helm-make
-
-    #+BEGIN_SRC emacs-lisp
-      (use-package helm-make
-        :ensure t)
-    #+END_SRC
 
 *** helm-swoop
 
@@ -1462,6 +1417,15 @@ And =bash-completion= to make things even better
   (add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
 
+** magit
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t
+    :bind ("C-c g" . magit-status))
+  (setq magit-last-seen-setup-instructions "1.4.0")
+#+END_SRC
+
 ** TODO proced
 
 #+BEGIN_SRC emacs-lisp
@@ -1471,99 +1435,6 @@ And =bash-completion= to make things even better
   (add-hook 'proced-mode-hook 'proced-settings)
 
 #+END_SRC
-
-** TODO Version control integration
-*** Git
-
-    #+begin_src emacs-lisp
-      (use-package git-commit-mode
-        :ensure t)
-      (use-package git-rebase-mode
-        :ensure t)
-      (use-package gitignore-mode
-        :ensure t)
-      (use-package gitconfig-mode
-        :ensure t)
-      (use-package gitattributes-mode
-        :ensure t)
-    #+end_src
-
-
-**** magit
-
-     #+begin_src emacs-lisp
-       (use-package magit
-         :ensure t
-         :bind ("C-c g" . magit-status))
-       (setq magit-last-seen-setup-instructions "1.4.0")
-     #+end_src
-
-Ediff with magit is fabulous, but lets deactivate the popup window that caused me to think Emacs was hanging to go straight to triple view.
-
-=N/P= to navigate between conflicts
-=A/B/C= to choose beetween left/right or edit
-
-
-#+BEGIN_SRC emacs-lisp
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-#+END_SRC
-
-***** Magit git-svn integration
-
-      At work, I use ~git-svn~ to be able to use git locally but integrating in the
-      subversion they use. Integrating ~magit~ and ~git-svn~ is a bonus but, as it
-      exists, let's do it :).
-
-      #+begin_src emacs-lisp
-        (use-package magit-svn
-          :ensure t)
-      #+end_src
-
-      The /quick key/ to get the ~magit-svn~ menu is ~N~.
-**** git fringe decoration
-
-     #+begin_src emacs-lisp
-       (use-package git-gutter-fringe
-           :ensure t
-           :config (global-git-gutter-mode +1))
-     #+end_src emacs-lisp
-
-**** git-annex
-
-     [[http://git-annex.branchable.com/][Git-annex]] is a wonderful piece of software that I use a lot in my repositories.
-
-     #+BEGIN_QUOTE
-     git-annex allows managing files with git, without checking the file contents into git. While that may seem paradoxical, it is useful when dealing with files larger than git can currently easily handle, whether due to limitations in memory, time, or disk space.
-     #+END_QUOTE
-
-     In Emacs, it integrates with magit and dired mode. The annex subcommand for magit is ~@~.
-
-     #+begin_src emacs-lisp
-       (use-package git-annex
-         :ensure t)
-       (use-package magit-annex
-         :ensure t)
-     #+end_src
-
-**** git-timemachine
-Allows you to step though the git history of the file you’re currently editing in Emacs.
-
-- =p= visit previous historic version
-- =n= visit next historic version
-- =w= copy the hash of the current historic version
-- =q= exit the time machine buffer
-
-     #+BEGIN_SRC emacs-lisp
-       (use-package git-timemachine
-         :ensure t)
-     #+END_SRC
-
-**** git-blame
-
-     #+BEGIN_SRC emacs-lisp
-       (use-package git-blame
-         :ensure t)
-     #+END_SRC
 
 ** TODO Diff
 
@@ -2007,18 +1878,7 @@ Add date and load to the modeline
    #+BEGIN_SRC emacs-lisp
      (use-package vagrant
        :ensure t
-       :defer t
-       :init
-       (progn
-         (evil-leader/set-key
-           "VD" 'vagrant-destroy
-           "Ve" 'vagrant-edit
-           "VH" 'vagrant-halt
-           "Vp" 'vagrant-provision
-           "Vr" 'vagrant-resume
-           "Vs" 'vagrant-status
-           "VS" 'vagrant-suspend
-           "VV" 'vagrant-up)))
+       :defer t)
    #+END_SRC
 
    And let's also add a TRAMP add-on for Vagrant. The idea is to be
@@ -2094,7 +1954,7 @@ Add date and load to the modeline
 ** TODO Lisp
 
 #+BEGIN_SRC emacs-lisp
-  (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;  (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (setq inferior-lisp-program "/bin/sbcl"
         lisp-indent-function 'common-lisp-indent-function
         slime-complete-symbol-function 'slime-fuzzy-complete-symbol
