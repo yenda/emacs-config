@@ -750,6 +750,7 @@ One feature of IntelliJ that really rocks is the =C-w= shortcuts that select "in
       (define-key vde/launcher-map "u" #'mu4e-update-mail-and-index)
     #+END_SRC
 
+
 *** TODO Scrolling
 
 Ensuring that =M-v= always undoes =C-v=, so you can go back exactly where you were.
@@ -1436,6 +1437,88 @@ And =bash-completion= to make things even better
 
 #+END_SRC
 
+<<<<<<< HEAD
+=======
+** TODO Version control integration
+*** Git
+
+    #+begin_src emacs-lisp
+      (use-package gitignore-mode
+        :ensure t)
+      (use-package gitconfig-mode
+        :ensure t)
+      (use-package gitattributes-mode
+        :ensure t)
+    #+end_src
+
+
+**** magit
+
+     #+begin_src emacs-lisp
+       (use-package magit
+         :ensure t
+         :bind ("C-c g" . magit-status))
+       (setq magit-last-seen-setup-instructions "1.4.0")
+     #+end_src
+
+Ediff with magit is fabulous, but lets deactivate the popup window that caused me to think Emacs was hanging to go straight to triple view.
+
+=N/P= to navigate between conflicts
+=A/B/C= to choose beetween left/right or edit
+
+
+#+BEGIN_SRC emacs-lisp
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+#+END_SRC
+
+
+
+**** git fringe decoration
+
+     #+begin_src emacs-lisp
+       (use-package git-gutter-fringe
+           :ensure t
+           :config (global-git-gutter-mode +1))
+     #+end_src emacs-lisp
+
+**** git-annex
+
+     [[http://git-annex.branchable.com/][Git-annex]] is a wonderful piece of software that I use a lot in my repositories.
+
+     #+BEGIN_QUOTE
+     git-annex allows managing files with git, without checking the file contents into git. While that may seem paradoxical, it is useful when dealing with files larger than git can currently easily handle, whether due to limitations in memory, time, or disk space.
+     #+END_QUOTE
+
+     In Emacs, it integrates with magit and dired mode. The annex subcommand for magit is ~@~.
+
+     #+begin_src emacs-lisp
+       (use-package git-annex
+         :ensure t)
+       (use-package magit-annex
+         :ensure t)
+     #+end_src
+
+**** git-timemachine
+Allows you to step though the git history of the file you’re currently editing in Emacs.
+
+- =p= visit previous historic version
+- =n= visit next historic version
+- =w= copy the hash of the current historic version
+- =q= exit the time machine buffer
+
+     #+BEGIN_SRC emacs-lisp
+       (use-package git-timemachine
+         :ensure t)
+     #+END_SRC
+
+**** git-blame
+
+     #+BEGIN_SRC emacs-lisp
+       (use-package git-blame
+         :ensure t)
+     #+END_SRC
+
+>>>>>>> 95691c6b22d622695286530cf435e31840c4a9e0
 ** TODO Diff
 
    The =diff-mode= of Emacs is pretty cool, but let's show important
@@ -2343,6 +2426,7 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 * Experimentations [0%]
 ** Guru-mode
 
+<<<<<<< HEAD
 #+BEGIN_SRC emacs-lisp
   ;; (use-package guru-mode
   ;;     :ensure t
@@ -2356,6 +2440,21 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
   ;;              [mouse-4] [down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4]
   ;;              [mouse-5] [down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5]))
     ;; (global-unset-key k))
+=======
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package guru-mode
+      :ensure t
+      :config
+      (guru-global-mode +1))
+
+  ;; This disables undesirable keys in emacs
+  (dolist (k '([mouse-1] [down-mouse-1] [drag-mouse-1] [double-mouse-1] [triple-mouse-1]
+               [mouse-2] [down-mouse-2] [drag-mouse-2] [double-mouse-2] [triple-mouse-2]
+               [mouse-3] [down-mouse-3] [drag-mouse-3] [double-mouse-3] [triple-mouse-3]
+               [mouse-4] [down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4]
+               [mouse-5] [down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5]))
+    (global-unset-key k))
+>>>>>>> 95691c6b22d622695286530cf435e31840c4a9e0
 #+END_SRC
 
 ** Swap help-map
@@ -2387,27 +2486,30 @@ Practice touch/speed typing in emacs
       :ensure t)
 #+END_SRC
 
+<<<<<<< HEAD
 ** Load config file
 
 #+BEGIN_SRC emacs-lisp
 ;  (find-file "~/.emacs.d/emacs.org")
 #+END_SRC
 
+=======
+>>>>>>> 95691c6b22d622695286530cf435e31840c4a9e0
 ** Scala : ensime
 
 #+BEGIN_SRC emacs-lisp
-  ;; Restart emacs and do `M-x package-install [RETURN] ensime [RETURN]`
-  ;; To keep up-to-date, do `M-x list-packages [RETURN] U [RETURN] x [RETURN]`
+    ;; Restart emacs and do `M-x package-install [RETURN] ensime [RETURN]`
+    ;; To keep up-to-date, do `M-x list-packages [RETURN] U [RETURN] x [RETURN]`
 
-  ;; If necessary, make sure "sbt" and "scala" are in the PATH environment
-  ;; (setenv "PATH" (concat "/path/to/sbt/bin:" (getenv "PATH")))
-  ;; (setenv "PATH" (concat "/path/to/scala/bin:" (getenv "PATH")))
-  ;;
-  ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance: 
-  ;; (setq exec-path (append exec-path '("/usr/local/bin")))
+    ;; If necessary, make sure "sbt" and "scala" are in the PATH environment
+  (setenv "PATH" (concat "/path/to/sbt/bin:" (getenv "PATH")))
+  (setenv "PATH" (concat "/path/to/scala/bin:" (getenv "PATH")))
+    ;;
+    ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance: 
+  (setq exec-path (append exec-path '("/usr/local/bin")))
 
-;;  (require 'ensime)
-;;  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+  (require 'ensime)
+  (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 #+END_SRC
 
 ** Terminal
