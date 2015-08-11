@@ -2467,7 +2467,6 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
                [mouse-4] [down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4]
                [mouse-5] [down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5]))
     (global-unset-key k))
->>>>>>> 95691c6b22d622695286530cf435e31840c4a9e0
 #+END_SRC
 
 ** Swap help-map
@@ -2502,15 +2501,13 @@ Practice touch/speed typing in emacs
 <<<<<<< HEAD
 ** Load config file
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;  (find-file "~/.emacs.d/emacs.org")
 #+END_SRC
 
-=======
->>>>>>> 95691c6b22d622695286530cf435e31840c4a9e0
 ** Scala : ensime
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
     ;; Restart emacs and do `M-x package-install [RETURN] ensime [RETURN]`
     ;; To keep up-to-date, do `M-x list-packages [RETURN] U [RETURN] x [RETURN]`
 
