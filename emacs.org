@@ -2410,28 +2410,41 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 * TODO Irc
 
 #+BEGIN_SRC emacs-lisp
-      (defun my-nickserv-password (_)
-        (with-temp-buffer
-          (insert-file-contents-literally my-credentials-file)
-          (plist-get (read (buffer-string)) :nickserv-password)))
+        (defun my-nickserv-password (_)
+          (with-temp-buffer
+            (insert-file-contents-literally my-credentials-file)
+            (plist-get (read (buffer-string)) :nickserv-password)))
 
-(require 'circe)
-      (setq circe-network-options
-            `(("Freenode"
-               :nick "yenda"
-               :channels ("#emacs" "#emacs-circe" "#lisp" "#python" "#mesos" "#ansible" "#guix")
-               :nickserv-password my-nickserv-password)))
+  (require 'circe)
+        (setq circe-network-options
+              `(("Freenode"
+                 :nick "yenda"
+                 :channels ("#emacs" "#emacs-circe" "#lisp" "#python" "#mesos" "#ansible" "#guix")
+                 :nickserv-password my-nickserv-password)))
 
-      ;; (setq circe-reduce-lurker-spam t)
-      ;; (circe-set-display-handler "JOIN" (lambda (&rest ignored) nil))))
+        ;; (setq circe-reduce-lurker-spam t)
+        ;; (circe-set-display-handler "JOIN" (lambda (&rest ignored) nil))))
 
-    (defun yenda/circe-connect-or-helm ()
-      (interactive)
-      (if (car (circe-server-buffers))
-          (progn (circe-reconnect-all) (helm-circe))
-          (circe "Freenode")))
+  ;;;###autoload
+  (defun helm-circe-all ()
+    "Custom helm buffer for circe channel and server buffers only."
+    (interactive)
+    (let ((sources
+           '(helm-circe/circe-new-activity-source
+             helm-circe/circe-channel-buffer-source
+             helm-circe/circe-query-buffer-source
+             helm-circe/circe-server-buffer-source)))
+      (helm :sources sources
+            :buffer "*helm-circe*")))
 
-      (global-set-key (kbd "<f8>") (lambda() (interactive) (yenda/circe-connect-or-helm)))
+
+      (defun yenda/circe-connect-or-helm ()
+        (interactive)
+        (if (car (circe-server-buffers))
+            (helm-circe-all)
+            (circe "Freenode")))
+
+        (global-set-key (kbd "<f8>") (lambda() (interactive) (yenda/circe-connect-or-helm)))
 #+END_SRC
 
 * Experimentations [0%]
