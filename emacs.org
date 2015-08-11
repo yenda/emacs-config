@@ -1260,6 +1260,19 @@ First let's define the default directory for the =org= files, the one to be adde
     (define-key org-mode-map (kbd "C-c C-x p") 'org-pomodoro))
 #+END_SRC
 
+* Latex
+
+#+BEGIN_SRC emacs-lisp
+   (require 'tex)
+   (setq TeX-auto-save t)
+   (setq TeX-parse-self t)
+   (setq-default TeX-master nil)
+
+   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+#+END_SRC
+
 * Modes [3%]
 ** DONE Discover my major
 
