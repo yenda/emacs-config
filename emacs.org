@@ -2495,7 +2495,6 @@ Practice touch/speed typing in emacs
       :ensure t)
 #+END_SRC
 
-<<<<<<< HEAD
 ** Load config file
 
 #+BEGIN_SRC emacs-lisp :tangle no
