@@ -798,9 +798,17 @@ That says it all, it's kind of a must.
   ;; Move this elsewhere, it's not related to key-chord
   (defun my/switch-to-previous-buffer ()
     "Switch to previously open buffer.
-  Repeated invocations toggle between the two most recently open buffers."
+    Repeated invocations toggle between the two most recently open buffers."
     (interactive)
     (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+  (defun paredit-duplicate-current-line ()
+    (back-to-indentation)
+    (let (kill-ring kill-ring-yank-pointer)
+      (paredit-kill)
+      (yank)
+      (newline-and-indent)
+      (yank)))
 
   (defun duplicate-current-line (&optional num)
     "Duplicate the current line NUM times."
@@ -816,29 +824,29 @@ That says it all, it's kind of a must.
 
 
   (use-package key-chord
-    :ensure t
-    :config
-    (progn
-      (setq key-chord-one-key-delay 0.16)
-      (key-chord-mode 1)
-      ;; k can be bound too
-      (key-chord-define-global "uu"     'undo)
-      (key-chord-define-global "yy"     'duplicate-current-line)
-      (key-chord-define-global "UU"     'undo-tree-visualize)
+      :ensure t
+      :config
+      (progn
+        (setq key-chord-one-key-delay 0.16)
+        (key-chord-mode 1)
+        ;; k can be bound too
+        (key-chord-define-global "uu"     'undo)
+        (key-chord-define-global "yy"     'duplicate-current-line)
+        (key-chord-define-global "UU"     'undo-tree-visualize)
 
-      (key-chord-define-global "jw"     'ace-window)
-      (key-chord-define-global "jj"     'avy-goto-word-1)
-    ;; buffer actions
-    (key-chord-define-global "!r"     'eval-region)
-    (key-chord-define-global "!b"     'eval-buffer)
-    (key-chord-define-global "!e"     'eval-last-sexp)
+        (key-chord-define-global "jw"     'ace-window)
+        (key-chord-define-global "jj"     'avy-goto-word-1)
+        ;; buffer actions
+        (key-chord-define-global "!r"     'eval-region)
+        (key-chord-define-global "!b"     'eval-buffer)
+        (key-chord-define-global "!e"     'eval-last-sexp)
 
-    ;; commands
-    (key-chord-define-global "RR"     'point-to-register)
-    (key-chord-define-global "FF"     'jump-to-register)
-    (key-chord-define-global "dd"     'kill-whole-line)
-    (key-chord-define-global "xx"     'er/expand-region)
-    (key-chord-define-global "JJ"     'my/switch-to-previous-buffer)))
+        ;; commands
+        (key-chord-define-global "RR"     'point-to-register)
+        (key-chord-define-global "FF"     'jump-to-register)
+        (key-chord-define-global "dd"     'kill-whole-line)
+        (key-chord-define-global "xx"     'er/expand-region)
+        (key-chord-define-global "JJ"     'my/switch-to-previous-buffer)))
 #+END_SRC
 
 *** Highligh indentation
