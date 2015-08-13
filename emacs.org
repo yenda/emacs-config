@@ -224,6 +224,10 @@ Ask confirmation before killing emacs when we are in a graphical session
 Add some macros to be able to conditionnally load stuff (taken from [[http://emacs-fu.blogspot.fr/2008/12/using-packages-functions-only-if-they.html][emacs-fu)]].
 
 #+BEGIN_SRC emacs-lisp
+  (setq tramp-default-method "ssh")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
   (defmacro require-maybe (feature &optional file)
       "*Try to require FEATURE, but don't signal an error if `require' fails."
        `(require ,feature ,file 'noerror))
