@@ -766,10 +766,29 @@ That says it all, it's kind of a must.
 *** Ace jump
 
     #+BEGIN_SRC emacs-lisp
-      (use-package ace-jump-mode
-        :ensure t
-        :commands ace-jump-mode
-        :bind ("<f7>" . ace-jump-mode))
+            (use-package avy
+              :ensure t
+              :config
+              (set-face-attribute 'avy-lead-face nil :foreground "deep sky blue" :weight 'bold :height 2.0))
+
+            (use-package ace-window
+              :ensure t
+              :config
+              (set-face-attribute 'aw-leading-char-face nil :foreground "deep sky blue" :weight 'bold :height 3.0)
+              (set-face-attribute 'aw-mode-line-face nil :inherit 'mode-line-buffer-id :foreground "lawn green")
+              (setq aw-keys   '(?a ?u ?i ?e ?t ?s ?r)
+                    aw-dispatch-always t
+                    aw-dispatch-alist
+                    '((?y aw-delete-window     "Ace - Delete Window")
+                      (?x aw-swap-window       "Ace - Swap Window")
+                      (?\' aw-flip-window)
+                      (?\. aw-split-window-vert "Ace - Split Vert Window")
+                      (?c aw-split-window-horz "Ace - Split Horz Window")
+                      (?n delete-other-windows "Ace - Maximize Window")
+                      (?\, delete-other-windows)
+                      (?k balance-windows)
+                      (?v winner-undo)
+                      (?o winner-redo))))
     #+END_SRC
 
 
