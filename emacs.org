@@ -260,14 +260,14 @@ Make sur that we use ~utf-8~ by default.
   (setq default-buffer-file-coding-system 'utf-8)
 #+end_src
 
-*** TODO Mouse
+*** Mouse
     Move the mouse away to not bother.
 
     #+begin_src emacs-lisp
       (mouse-avoidance-mode 'jump)
     #+end_src
 
-*** TODO Backup files
+*** Backup files
 
 Files suffixed with =~= in the current directory are ugly. We are still going to use backup files, as it can saves some time in case of trouble, but we'll move them to an emacs backup directory
 
@@ -289,7 +289,7 @@ Now that all the temporary files are out of the way, we can keep more of them.
       version-control t)
 #+end_src
 
-*** TODO Buffers
+*** Buffers
 
 Automatically refresh buffer if changed on disk
 
@@ -325,7 +325,7 @@ Remap =C-x k= to kill the current buffer instead of asking for the one to kill.
   (global-set-key (kbd "C-c k") 'close-and-kill-this-pane)
  #+END_SRC
 
-*** TODO Comment/Uncomment region
+*** Comment/Uncomment region
 
     There is a cool function in emacs wich is =commend-dwim= (bounded
     to =M-;=. This adds a comment at the right place (at the end of
@@ -361,7 +361,7 @@ Remap =C-x k= to kill the current buffer instead of asking for the one to kill.
   (global-set-key (kbd "C-;") 'my/toggle-comments)
     #+END_SRC
 
-*** TODO Kill advice
+*** Kill advice
 
     Let's define few advice with =kill-ring-save= and =kill-region=.
 
@@ -382,7 +382,7 @@ Remap =C-x k= to kill the current buffer instead of asking for the one to kill.
                  (line-beginning-position 2)))))
     #+END_SRC
 
-*** TODO Formatting
+*** Formatting
 
 Require a new line at the end of Files
 
@@ -527,7 +527,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
                   'smarter-move-beginning-of-line)
 #+END_SRC
 
-*** TODO Dired
+*** Dired
 
     Dired is really a cool mode, let's enhance it.
 
@@ -649,7 +649,7 @@ Let's also rewrite some built-in to better /default/. Let's start with
       (setq dired-listing-switches "-laGh1v --group-directories-first")
     #+END_SRC
 
-*** TODO Search
+*** Search
 
 Make isearch-forward put the cursor at the start of the search, not the end, so that isearch can be used for navigation. See also http://www.emacswiki.org/emacs/IsearchOtherEnd.
 
@@ -659,7 +659,7 @@ Make isearch-forward put the cursor at the start of the search, not the end, so 
   (add-hook 'isearch-mode-end-hook 'my-isearch-goto-match-beginning)
 #+END_SRC
 
-*** TODO Selection
+*** Selection
 
 One feature of IntelliJ that really rocks is the =C-w= shortcuts that select "intelligently". =exand-region= is doing this for emacs, see [[http://emacsrocks.com/e09.html][Emacs Rocks Episode 09]].
 
@@ -669,7 +669,7 @@ One feature of IntelliJ that really rocks is the =C-w= shortcuts that select "in
         :bind ("C-=" . er/expand-region))
     #+END_SRC
 
-*** TODO Notifications
+*** Notifications
     Emacs now has notifications (freedesktop.org specifications)
     built-in. Let's load it for potential needs.
 
@@ -687,7 +687,7 @@ One feature of IntelliJ that really rocks is the =C-w= shortcuts that select "in
           :urgency 'low)
     #+END_SRC
 
-*** TODO Zoom(ing)
+*** Zoom(ing)
 
     Being able to zoom in and out can be cool, especially when
     presenting something with emacs ; so that everybody can see
@@ -776,7 +776,7 @@ Ensuring that =M-v= always undoes =C-v=, so you can go back exactly where you we
         (setq undo-tree-history-directory-alist (list (cons "." undo-dir))))))
 #+END_SRC
 
-*** TODO Popwin
+*** Popwin
 
 #+BEGIN_QUOTE
 popwin is a popup window manager for Emacs which makes you free from the hell of annoying buffers such like *Help*, *Completions*, *compilation*, and etc.
@@ -802,7 +802,7 @@ That says it all, it's kind of a must.
       (global-set-key (kbd "C-z") popwin:keymap)))
 #+END_SRC
 
-*** TODO Ace jump
+*** Ace jump
 
     #+BEGIN_SRC emacs-lisp
       (use-package ace-jump-mode
@@ -845,7 +845,7 @@ That says it all, it's kind of a must.
     (key-chord-define-global "JJ"     'my/switch-to-previous-buffer)))
 #+END_SRC
 
-*** TODO Highligh indentation
+*** Highligh indentation
 
 
     #+BEGIN_SRC emacs-lisp
@@ -863,7 +863,7 @@ That says it all, it's kind of a must.
           (set-face-background 'highlight-indentation-current-column-face "#586e75")))
     #+END_SRC
 
-*** TODO Async
+*** Async
 
 =async.el= is a module for doing asynchronous processing in Emacs. Let's load it as it's gonna be useful.
 
@@ -937,7 +937,7 @@ Multiple cursors for Emacs, this is a pretty /badas's/ functionnality.
            ("C-c C-<" . mc/mark-all-like-this)))
 #+END_SRC
 
-* Org-mode [0%]
+* Org-mode
 ** Org
 
 #+BEGIN_QUOTE
