@@ -769,7 +769,7 @@ That says it all, it's kind of a must.
             (use-package avy
               :ensure t
               :config
-              (set-face-attribute 'avy-lead-face nil :foreground "deep sky blue" :weight 'bold :height 2.0))
+              (set-face-attribute 'avy-lead-face nil :foreground "deep sky blue" :weight 'bold :height 1.0))
 
             (use-package ace-window
               :ensure t
