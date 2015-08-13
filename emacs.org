@@ -2082,7 +2082,6 @@ Add date and load to the modeline
 
 #+BEGIN_SRC emacs-lisp
   ;; Haskell conf
-  (haskell-mode)
   (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
   (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 
