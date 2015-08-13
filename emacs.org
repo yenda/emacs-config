@@ -802,6 +802,19 @@ That says it all, it's kind of a must.
     (interactive)
     (switch-to-buffer (other-buffer (current-buffer) 1)))
 
+  (defun duplicate-current-line (&optional num)
+    "Duplicate the current line NUM times."
+    (interactive "p")
+    (if (bound-and-true-p paredit-mode)
+        (paredit-duplicate-current-line)
+        (save-excursion
+          (when (eq (point-at-eol) (point-max))
+            (goto-char (point-max))
+            (newline)
+            (forward-char -1))
+          (duplicate-region num (point-at-bol) (1+ (point-at-eol))))))
+
+
   (use-package key-chord
     :ensure t
     :config
@@ -810,8 +823,11 @@ That says it all, it's kind of a must.
       (key-chord-mode 1)
       ;; k can be bound too
       (key-chord-define-global "uu"     'undo)
+      (key-chord-define-global "yy"     'duplicate-current-line)
       (key-chord-define-global "UU"     'undo-tree-visualize)
-      (key-chord-define-global "jj"     'ace-window)
+
+      (key-chord-define-global "jw"     'ace-window)
+      (key-chord-define-global "jj"     'avy-goto-word-1)
     ;; buffer actions
     (key-chord-define-global "!r"     'eval-region)
     (key-chord-define-global "!b"     'eval-buffer)
@@ -859,19 +875,6 @@ This make tasks run in dired asynchronously. This is a big improvement for peopl
 *** Keybindings
 
 #+BEGIN_SRC emacs-lisp
-  (defun duplicate-current-line (&optional num)
-    "Duplicate the current line NUM times."
-    (interactive "p")
-    (if (bound-and-true-p paredit-mode)
-        (paredit-duplicate-current-line)
-        (save-excursion
-          (when (eq (point-at-eol) (point-max))
-            (goto-char (point-max))
-            (newline)
-            (forward-char -1))
-          (duplicate-region num (point-at-bol) (1+ (point-at-eol))))))
-
-
   (defun kill-region-or-backward-word ()
     (interactive)
     (if (region-active-p)
