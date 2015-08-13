@@ -1450,8 +1450,6 @@ And =bash-completion= to make things even better
 
 #+END_SRC
 
-<<<<<<< HEAD
-=======
 ** TODO Version control integration
 *** Git
 
