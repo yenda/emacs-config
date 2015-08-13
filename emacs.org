@@ -2255,7 +2255,6 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 ** EMMS
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/elisp/emms/")
   (require 'emms-setup)
   (emms-standard)
   (emms-default-players)
