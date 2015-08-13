@@ -321,8 +321,8 @@ Remap =C-x k= to kill the current buffer instead of asking for the one to kill.
     (if (not (one-window-p))
         (delete-window)))
 
-  (global-set-key (kbd "C-c k") 'kill-default-buffer)
-  (global-set-key (kbd "C-x k") 'close-and-kill-this-pane)
+  (global-set-key (kbd "C-x k") 'kill-default-buffer)
+  (global-set-key (kbd "C-c k") 'close-and-kill-this-pane)
  #+END_SRC
 
 *** TODO Comment/Uncomment region
