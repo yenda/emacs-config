@@ -127,6 +127,7 @@ the splash-screen.
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (setq inhibit-splash-screen t)
+  (toggle-frame-maximized)
 #+end_src
 
 We want to see somewhere the column and line number, and also highlight the
