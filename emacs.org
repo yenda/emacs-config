@@ -765,6 +765,25 @@ Ensuring that =M-v= always undoes =C-v=, so you can go back exactly where you we
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 #+END_SRC
 
+*** Undo-tree
+
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :bind (("C-*" . undo-tree-undo))
+    :init
+    (progn
+      (defalias 'redo 'undo-tree-redo)
+      (defalias 'undo 'undo-tree-undo)
+      (global-undo-tree-mode)
+      )
+    :config
+    (progn
+      (setq undo-tree-auto-save-history t)
+      (let ((undo-dir (expand-file-name "undo" user-emacs-directory)))
+        (setq undo-tree-history-directory-alist (list (cons "." undo-dir))))))
+#+END_SRC
+
 *** TODO Popwin
 
 #+BEGIN_QUOTE
@@ -819,7 +838,7 @@ That says it all, it's kind of a must.
       (key-chord-mode 1)
       ;; k can be bound too
       (key-chord-define-global "uu"     'undo)
-      (key-chord-define-global "UU"     'undo-tree)
+      (key-chord-define-global "UU"     'undo-tree-visualize)
       (key-chord-define-global "jj"     'ace-window)
     ;; buffer actions
     (key-chord-define-global "!r"     'eval-region)
