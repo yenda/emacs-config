@@ -11,14 +11,6 @@
 
 #+END_SRC
 
-* TODOS [0%]
-** TODO Mails
-   - State "TODO"       from ""           [2015-06-08 Mon 17:08]
-
-** TODO Multimedia
-   - State "TODO"       from ""           [2015-06-08 Mon 17:08]
-
-** TODO Conkeror
 * Introduction
 
 This is my self-documented configuration for emacs. It is a work-in-progress under heavy modifications.
@@ -123,7 +115,7 @@ The [[file:init.el][Init file]] only loads orgmode and tangle this file into an 
      github-personal-folder (expand-file-name github-username github-general-folder))
   #+END_SRC
 
-* General configuration [33%]
+* General configuration
 ** DONE Appearance
 *** Miscellaneous
 
@@ -194,7 +186,7 @@ Here I set up git diffs and buffer position in the fringe.
                (powerline-default-theme))
 #+END_SRC
 
-** TODO Behavior
+** Behavior
 *** Intro
 
 First thing first, let's define a shortcuts for editing this configuration.
@@ -879,7 +871,7 @@ That says it all, it's kind of a must.
       (use-package async)
     #+END_SRC
 
-*** TODO async-dired
+*** async-dired
 
 This make tasks run in dired asynchronously. This is a big improvement for people moving files around with dired as it won't block Emacs anymore during copy for instance.
 
@@ -889,7 +881,7 @@ This make tasks run in dired asynchronously. This is a big improvement for peopl
     (dired-async-mode 1))
 #+END_SRC
 
-** TODO Server mode
+** Server mode
 
    Start a server if not already running. I usually start emacs as a
    daemon when at the start of the computer, but you never know =;-)=.
@@ -912,8 +904,8 @@ This make tasks run in dired asynchronously. This is a big improvement for peopl
         (server-start))))
 #+END_SRC
 
-* Navigation [50%]
-** TODO Jump around
+* Navigation
+** Jump around
 
 Set up =C-x p= to pop to a mark previously set with =C-SPC=
 Go from mark to mark
@@ -932,7 +924,7 @@ To jump to positions more effectively we save positions in registers
     Jump to the position and buffer saved in register r (jump-to-register).
 #+END_QUOTE
 
-** DONE multiple-cursors
+** Multiple-cursors
 
 Multiple cursors for Emacs, this is a pretty /badas's/ functionnality.
 
@@ -945,14 +937,14 @@ Multiple cursors for Emacs, this is a pretty /badas's/ functionnality.
            ("C-c C-<" . mc/mark-all-like-this)))
 #+END_SRC
 
-* Org-mode [14%]
-** DONE Org
+* Org-mode [0%]
+** Org
 
 #+BEGIN_QUOTE
 Org-mode is a powerful system for organizing your complex life with simple plain-text files. It seamlessly integrates all your notes, mindmaps, TODO lists, calendar, day planner, and project schedules into a single system that can be easily searched (e.g. by grep), encrypted (e.g. by GnuPG), backed up and synced (e.g. by Dropbox), imported/exported, and accessed on the go (e.g. on an iPhone or Android smartphone). It can even be used for authoring web pages and documents.
 #+END_QUOTE
 
-** TODO Standard configuration
+** Standard configuration
 
 First let's define the default directory for the =org= files, the one to be added
      to the agenda and the archives.
@@ -1302,7 +1294,7 @@ First let's define the default directory for the =org= files, the one to be adde
         (define-key org-mode-map (kbd "C-c s i") 'my/org-insert-src-block))
     #+end_src
 
-** TODO Pomodoro
+** Pomodoro
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-pomodoro
@@ -1325,8 +1317,8 @@ First let's define the default directory for the =org= files, the one to be adde
    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 #+END_SRC
 
-* Modes [3%]
-** DONE Discover my major
+* Modes
+** Discover my major
 
 Discover key bindings and their meaning for the current Emacs major mode.
 
@@ -1336,7 +1328,7 @@ Discover key bindings and their meaning for the current Emacs major mode.
        :bind ("C-h C-m" . discover-my-major))
    #+END_SRC
 
-** TODO Manage my minor
+** Manage my minor
 
 Let's also use =manage-my-minor= to be able to enable/disable minor-modes.
 
@@ -1347,7 +1339,7 @@ Let's also use =manage-my-minor= to be able to enable/disable minor-modes.
        :bind ("C-c x n" . manage-minor-mode))
    #+END_SRC
 
-** TODO Helm
+** Helm
 *** Intro
 
 [[http://tuhdo.github.io/helm-intro.html][Very good documentation on helm]]
@@ -1477,13 +1469,13 @@ And =bash-completion= to make things even better
           (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)))
     #+END_SRC
 
-** TODO Company-mode
+** Company-mode
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'after-init-hook 'global-company-mode)
 #+END_SRC
 
-** magit
+** Magit
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
@@ -1492,7 +1484,7 @@ And =bash-completion= to make things even better
   (setq magit-last-seen-setup-instructions "1.4.0")
 #+END_SRC
 
-** TODO proced
+** proced
 
 #+BEGIN_SRC emacs-lisp
   (defun proced-settings ()
@@ -1502,7 +1494,7 @@ And =bash-completion= to make things even better
 
 #+END_SRC
 
-** TODO Version control integration
+** Version control integration
 *** Git
 
     #+begin_src emacs-lisp
@@ -1583,7 +1575,7 @@ Allows you to step though the git history of the file you’re currently editing
      #+END_SRC
 
 >>>>>>> 95691c6b22d622695286530cf435e31840c4a9e0
-** TODO Diff
+** Diff
 
    The =diff-mode= of Emacs is pretty cool, but let's show important
    whitespace when in this mode.
@@ -1604,7 +1596,7 @@ Allows you to step though the git history of the file you’re currently editing
                                  (whitespace-mode 1)))
    #+END_SRC
 
-** TODO Terminal
+** Terminal
 
    Let's install and use [[http://www.emacswiki.org/emacs/MultiTerm][multi-term]], which is a cool addition to =term.el=.
 
@@ -1628,7 +1620,7 @@ Allows you to step though the git history of the file you’re currently editing
       :ensure t)
 #+END_SRC
 
-** TODO Flyspell
+** Flyspell
 
    #+BEGIN_QUOTE
    Flyspell enables on-the-fly spell checking in Emacs by the means of
@@ -1665,7 +1657,7 @@ Allows you to step though the git history of the file you’re currently editing
          (add-hook 'prog-mode-hook 'flyspell-prog-mode)))
    #+END_SRC
 
-** TODO Flycheck
+** Flycheck
 
    #+BEGIN_QUOTE
    Flycheck is a modern on-the-fly syntax checking extension for GNU Emacs 24, intended as replacement for the older Flymake extension which is part of GNU Emacs.
@@ -1686,7 +1678,7 @@ Allows you to step though the git history of the file you’re currently editing
          (add-hook 'after-init-hook #'global-flycheck-mode)))
    #+END_SRC
 
-** TODO Projectile
+** Projectile
 
    #+BEGIN_QUOTE
    Projectile is a project interaction library for Emacs. Its goal is
@@ -1734,7 +1726,7 @@ Allows you to step though the git history of the file you’re currently editing
           (persp-mode)))
     #+END_SRC
 
-** TODO Compilation mode
+** Compilation mode
 
    Set options and key binding for =compile=.
 
@@ -1773,7 +1765,7 @@ Allows you to step though the git history of the file you’re currently editing
       (setq compilation-scroll-output t)
     #+END_SRC
 
-** TODO Provided configuration
+** Provided configuration
 
    I'm managing my configurations using [[https://github.com/RichiH/vcsh][vcsh]] and [[http://myrepos.branchable.com/][myrepos]], like [[https://github.com/vdemeester/vcsh-home#how-it-is-supposed-to-work][that]]. I have a lot
    of different configuration repository ([[https://github.com/search?q%3Duser%253Avdemeester%2Bconfig][here]]) and the way I use it
@@ -1811,7 +1803,7 @@ Allows you to step though the git history of the file you’re currently editing
      (load-provided-configuration user-emacs-provided-directory)
    #+END_SRC
 
-** TODO Linux related modes
+** Linux related modes
 *** Archlinux
     I'm using [[http://archlinux.org][Archlinux]] on my personnal computers and I maintain a few packages
     on [[https://aur.archlinux.org][aur]], hopefully there is a mode for that.
@@ -1821,7 +1813,7 @@ Allows you to step though the git history of the file you’re currently editing
         :ensure t)
     #+END_SRC
 
-** TODO Markdown, Yaml & Toml
+** Markdown, Yaml & Toml
 
    #+BEGIN_SRC emacs-lisp
      (use-package markdown-mode
@@ -1841,7 +1833,7 @@ Allows you to step though the git history of the file you’re currently editing
        :ensure t)
    #+END_SRC
 
-** TODO Docker
+** Docker
 
    I'm playing a lot with [[http://docker.com][docker]] and most of the time editing
    Dockerfile and stuff inside Emacs.
@@ -1852,7 +1844,7 @@ Allows you to step though the git history of the file you’re currently editing
        :ensure t)
    #+END_SRC
 
-** TODO Ansible
+** Ansible
 
    [[http://docs.ansible.com/index.html][Ansible]] is a great automation tool I use to manage my servers and
    desktops.
@@ -1910,7 +1902,7 @@ Allows you to step though the git history of the file you’re currently editing
    '(define-key yaml-mode-map (kbd "C-c h a") 'lunaryorn-ansible-doc))
    #+END_SRC
 
-** TODO Yasnippet
+** Yasnippet
 
    Use YASnippet for snippets.
 
@@ -1930,7 +1922,7 @@ Allows you to step though the git history of the file you’re currently editing
        :bind ("C-c y" . helm-yas-complete))
    #+END_SRC
 
-** TODO Modeline
+** Modeline
 
 Add date and load to the modeline
 
@@ -2008,7 +2000,7 @@ Add date and load to the modeline
      ;;; ς ε ρ τ υ θ ι ο π α σ δ φ γ η ξ κ λ ζ χ ψ ω β ν μ
    #+END_SRC
 
-** TODO Floobits
+** Floobits
 
    I'm trying out [[https://floobits.com/][Floobits]] @work for remote pairing, mostly with
    intellij idea but let's try it out in Emacs =\o/=.
@@ -2018,7 +2010,7 @@ Add date and load to the modeline
        :ensure t)
    #+END_SRC
 
-** TODO Vagrant
+** Vagrant
 
    Let's add support for vagrant.
 
@@ -2037,7 +2029,7 @@ Add date and load to the modeline
        :defer t)
    #+END_SRC
 
-** TODO Gist
+** Gist
 
    Interact with Github gist(s) from Emacs :)
 
@@ -2049,7 +2041,7 @@ Add date and load to the modeline
        (setq gist-view-gist t))
    #+END_SRC
 
-** TODO deft
+** deft
 
    #+BEGIN_QUOTE
    Deft is an Emacs mode for quickly browsing, filtering, and editing
@@ -2070,7 +2062,7 @@ Add date and load to the modeline
        :bind ("<f9>" . deft))
    #+END_SRC
 
-* Programming Languages [0%]
+* Programming Languages
 ** HTML
 
 #+BEGIN_SRC emacs-lisp
@@ -2078,7 +2070,7 @@ Add date and load to the modeline
       :ensure t)
 #+END_SRC
 
-** TODO Haskell
+** Haskell
 
 #+BEGIN_SRC emacs-lisp
   ;; Haskell conf
@@ -2088,7 +2080,7 @@ Add date and load to the modeline
 
 #+END_SRC
 
-** TODO Javascript
+** Javascript
 
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
@@ -2097,7 +2089,7 @@ Add date and load to the modeline
     (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 #+END_SRC
 
-** TODO Lisp
+** Lisp
 
 #+BEGIN_SRC emacs-lisp
 ;  (load (expand-file-name "~/quicklisp/slime-helper.el"))
@@ -2127,7 +2119,7 @@ Add date and load to the modeline
                           (thing-at-point 'symbol)))))
 #+END_SRC
 
-** TODO Python
+** Python
 
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
@@ -2151,14 +2143,14 @@ Add date and load to the modeline
 
 #+RESULTS:
    
-** TODO Lua
+** Lua
 
    #+BEGIN_SRC emacs-lisp
      (use-package lua-mode
        :ensure t)
    #+END_SRC
 
-** TODO Lisp(s)
+** Lisp(s)
 *** General
 
     Let's install some LISP common useful modes.
@@ -2228,7 +2220,7 @@ Add date and load to the modeline
          :ensure t)
      #+END_SRC
 
-** TODO SQL
+** SQL
 
    Emacs is really more than an editor. The SQL mode is quick cool to
    used (and do not eat my memory like mysql-workbench for
@@ -2266,7 +2258,7 @@ Add date and load to the modeline
 
 #+END_SRC
 
-* TODO Diagramming
+* Diagramming
 
 [[http://zeekat.nl/articles/making-emacs-work-for-me.html#sec-3-1][From Zeekat]]
 
@@ -2288,7 +2280,7 @@ PlantUml is built on top of Graphviz.
         (expand-file-name "~/org/scripts/plantuml.jar"))
 #+END_SRC
 
-* TODO Firefox
+* Firefox
 
 Here are some libraries to interact with Firefox
 
@@ -2310,7 +2302,7 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
       :bind ("C-c m b" . helm-firefox-bookmarks))
 #+END_SRC
 
-* TODO Mails
+* Mails
 
 
 #+BEGIN_SRC emacs-lisp
@@ -2463,7 +2455,7 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
     )
   #+END_SRC
 
-* TODO Irc
+* Irc
 
 #+BEGIN_SRC emacs-lisp
     (defun my-nickserv-password (_)
@@ -2546,7 +2538,7 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 
 #+END_SRC
 
-* Experimentations [0%]
+* Experimentations
 ** Guru-mode
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -2576,7 +2568,7 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
   (global-set-key (kbd "s-RET") 'shell)
 #+END_SRC
 
-** TODO Desktop-save-mode
+** Desktop-save-mode
 
 I want to keep the state of my Emacs between sessions, i.e keep the same opened buffers.
 
@@ -2584,7 +2576,7 @@ I want to keep the state of my Emacs between sessions, i.e keep the same opened 
 ;;(desktop-save-mode 1)
 #+END_SRC
 
-** TODO Typing
+** Typing
 
 Practice touch/speed typing in emacs
 
