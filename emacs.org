@@ -807,11 +807,6 @@ That says it all, it's kind of a must.
       (use-package highlight-indentation
         :ensure t
         :commands (highlight-indentation-mode highlight-indentation-current-column-mode)
-        :init
-        (progn
-          ;; Add a key to toggle-map
-          (define-key vde/toggle-map "C" #'highlight-indentation-mode)
-          (define-key vde/toggle-map "c" #'highlight-indentation-current-column-mode))
         :config
         (progn
           (set-face-background 'highlight-indentation-face "#586e75")
@@ -1370,8 +1365,6 @@ Allows you to step though the git history of the file you’re currently editing
            :ensure t))
        :config
        (progn
-         (define-key vde/toggle-map "i" #'ispell-change-dictionary)
-         (define-key vde/launcher-map "i" #'flyspell-buffer)
          (setq ispell-program-name "aspell")
          (setq ispell-local-dictionary "en_US")
          (setq ispell-local-dictionary-alist
