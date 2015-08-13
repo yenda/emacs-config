@@ -2247,10 +2247,13 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 
 * Experimentations
 ** Swap help-map
+** EMMS
 
 #+BEGIN_SRC emacs-lisp
-  ;(global-set-key (kbd "C-?") 'help-map)
-
+  (add-to-list 'load-path "~/elisp/emms/")
+  (require 'emms-setup)
+  (emms-standard)
+  (emms-default-players)
 #+END_SRC
 ** Shortcut for shell
 
