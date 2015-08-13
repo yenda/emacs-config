@@ -1,7 +1,6 @@
 #+TITLE: Eric Dvorsak's emacs configuration
 #+AUTHOR: Eric Dvorsak
-#+EMAIL: eric.dvorsak [at] gmail [dot] com
-
+#+EMAIL: eric [at] dvorsak [dot] fr
 
 #+BEGIN_SRC
                                                           ___ __
