@@ -2134,6 +2134,12 @@ Add date and load to the modeline
         )
     #+END_SRC
 
+
+#+BEGIN_SRC emacs-lisp
+      (add-hook 'scheme-mode-hook 'my/lisps-mode-hook)
+#+END_SRC
+
+
 *** Emacs lisp
 
     Define some useful alias (just because I'm lazy).
