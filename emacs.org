@@ -801,6 +801,40 @@ That says it all, it's kind of a must.
         :bind ("<f7>" . ace-jump-mode))
     #+END_SRC
 
+
+*** Key Chords
+
+#+BEGIN_SRC emacs-lisp
+  ;; Move this elsewhere, it's not related to key-chord
+  (defun my/switch-to-previous-buffer ()
+    "Switch to previously open buffer.
+  Repeated invocations toggle between the two most recently open buffers."
+    (interactive)
+    (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+  (use-package key-chord
+    :ensure t
+    :config
+    (progn
+      (setq key-chord-one-key-delay 0.16)
+      (key-chord-mode 1)
+      ;; k can be bound too
+      (key-chord-define-global "uu"     'undo)
+      (key-chord-define-global "UU"     'undo-tree)
+      (key-chord-define-global "jj"     'ace-window)
+    ;; buffer actions
+    (key-chord-define-global "!r"     'eval-region)
+    (key-chord-define-global "!b"     'eval-buffer)
+    (key-chord-define-global "!e"     'eval-last-sexp)
+
+    ;; commands
+    (key-chord-define-global "RR"     'point-to-register)
+    (key-chord-define-global "FF"     'jump-to-register)
+    (key-chord-define-global "dd"     'kill-whole-line)
+    (key-chord-define-global "xx"     'er/expand-region)
+    (key-chord-define-global "JJ"     'my/switch-to-previous-buffer)))
+#+END_SRC
+
 *** TODO Highligh indentation
 
 
