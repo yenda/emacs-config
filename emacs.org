@@ -116,7 +116,7 @@ The [[file:init.el][Init file]] only loads orgmode and tangle this file into an 
   #+END_SRC
 
 * General configuration
-** DONE Appearance
+** Appearance
 *** Miscellaneous
 
 Unclutter the screen by removing menubar, toolbar and stuff, and by disabling
@@ -716,19 +716,20 @@ Ensuring that =M-v= always undoes =C-v=, so you can go back exactly where you we
 *** Undo-tree
 
 #+BEGIN_SRC emacs-lisp
-  (use-package undo-tree
-    :ensure t
-    :init
-    (progn
-      (defalias 'redo 'undo-tree-redo)
-      (defalias 'undo 'undo-tree-undo)
-      (global-undo-tree-mode)
-      )
-    :config
-    (progn
-      (setq undo-tree-auto-save-history t)
-      (let ((undo-dir (expand-file-name "undo" user-emacs-directory)))
-        (setq undo-tree-history-directory-alist (list (cons "." undo-dir))))))
+    (use-package undo-tree
+      :ensure t
+      :init
+      (progn
+        (defalias 'redo 'undo-tree-redo)
+        (defalias 'undo 'undo-tree-undo)
+        (global-undo-tree-mode)
+        )
+      :config
+      (progn
+        (define-key undo-tree-map (kbd "C-?") nil)
+        (setq undo-tree-auto-save-history t)
+        (let ((undo-dir (expand-file-name "undo" user-emacs-directory)))
+          (setq undo-tree-history-directory-alist (list (cons "." undo-dir))))))
 #+END_SRC
 
 *** Popwin
@@ -2246,7 +2247,6 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 #+END_SRC
 
 * Experimentations
-** Swap help-map
 ** EMMS
 
 #+BEGIN_SRC emacs-lisp
@@ -2254,11 +2254,6 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
   (require 'emms-setup)
   (emms-standard)
   (emms-default-players)
-#+END_SRC
-** Shortcut for shell
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "s-RET") 'shell)
 #+END_SRC
 
 ** Desktop-save-mode
@@ -2304,7 +2299,7 @@ Practice touch/speed typing in emacs
 ** Terminal
 
 #+BEGIN_SRC emacs-lisp
-;;  (global-set-key (kbd "M-RET") 'shell)
+  (global-set-key (kbd "<f1>") 'eshell)
 #+END_SRC
 
 ** Org reveal
