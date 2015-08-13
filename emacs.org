@@ -718,7 +718,6 @@ Ensuring that =M-v= always undoes =C-v=, so you can go back exactly where you we
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
-    :bind (("C-*" . undo-tree-undo))
     :init
     (progn
       (defalias 'redo 'undo-tree-redo)
@@ -835,6 +834,33 @@ This make tasks run in dired asynchronously. This is a big improvement for peopl
   (use-package dired-async
     :init
     (dired-async-mode 1))
+#+END_SRC
+
+*** Keybindings
+
+#+BEGIN_SRC emacs-lisp
+  (defun duplicate-current-line (&optional num)
+    "Duplicate the current line NUM times."
+    (interactive "p")
+    (if (bound-and-true-p paredit-mode)
+        (paredit-duplicate-current-line)
+        (save-excursion
+          (when (eq (point-at-eol) (point-max))
+            (goto-char (point-max))
+            (newline)
+            (forward-char -1))
+          (duplicate-region num (point-at-bol) (1+ (point-at-eol))))))
+
+
+  (defun kill-region-or-backward-word ()
+    (interactive)
+    (if (region-active-p)
+        (kill-region (region-beginning) (region-end))
+        (backward-kill-word 1)))
+
+  (define-key key-translation-map [?\C-h] [?\C-?])
+  (global-set-key (kbd "<f1>") 'help-command)
+  (global-set-key (kbd "M-h") 'kill-region-or-backward-word)
 #+END_SRC
 
 ** Server mode
