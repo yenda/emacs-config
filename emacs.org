@@ -1094,6 +1094,10 @@ Let's also use =manage-my-minor= to be able to enable/disable minor-modes.
        :bind ("C-c x n" . manage-minor-mode))
    #+END_SRC
 
+
+
+
+
 ** Helm
 *** Intro
 
@@ -1223,6 +1227,20 @@ And =bash-completion= to make things even better
           (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
           (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)))
     #+END_SRC
+
+*** helm-ag
+
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-ag
+    :ensure
+    :config
+    (setq helm-ag-base-command "ag --nocolor"
+          helm-ag-command-option "--all-text"
+          helm-ag-insert-at-point 'symbol)
+    (define-key helm-ag-mode-map (kbd "<return>")  'helm-ag-mode-jump-other-window)
+    (define-key helm-ag-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
+    (define-key helm-ag-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward))
+#+END_SRC
 
 ** Company-mode
 
