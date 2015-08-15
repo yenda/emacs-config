@@ -172,9 +172,9 @@ Here I set up git diffs and buffer position in the fringe.
 *** Font
 
 #+BEGIN_SRC emacs-lisp
-  (set-default-font "Ubuntu Mono-11")
-  (set-frame-font "Ubuntu Mono-11")
-  (set-face-attribute 'default nil :family "Ubuntu Mono" :height 100)
+  (set-default-font "Inconsolata-12")
+  (set-frame-font "Inconsolata-12")
+  (set-face-attribute 'default nil :family "Inconsolata" :height 110)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle no
