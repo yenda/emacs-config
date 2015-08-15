@@ -171,6 +171,12 @@ Here I set up git diffs and buffer position in the fringe.
 
 *** Font
 
+#+BEGIN_SRC emacs-lisp
+  (set-default-font "Ubuntu Mono-11")
+  (set-frame-font "Ubuntu Mono-11")
+  (set-face-attribute 'default nil :family "Ubuntu Mono" :height 100)
+#+END_SRC
+
 #+BEGIN_SRC emacs-lisp :tangle no
   (add-to-list 'default-frame-alist '(font . "Inconsolata for Powerline Medium" ))
   (set-face-attribute 'default t :font "Inconsolata for Powerline Medium" )
