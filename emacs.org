@@ -1928,32 +1928,34 @@ Add date and load to the modeline
 ** Lisp(s)
 *** General
 
-    Let's install some LISP common useful modes.
+Let's install some LISP common useful modes.
 
-    #+BEGIN_SRC emacs-lisp
-      (use-package paredit
-        :ensure t)
-      (use-package rainbow-mode
-        :ensure t)
-      (use-package rainbow-delimiters
-        :ensure t)
-      (use-package highlight-parentheses
-        :ensure t)
-    #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package paredit
+      :ensure t)
 
-    And define a comme lisp hook for all LISP-related prog-modes, mostly about
-    parentheses.
   (add-hook 'paredit-mode-hook
             (lambda ()
               (local-unset-key (kbd "M-?"))))
 
-    #+BEGIN_SRC emacs-lisp
-      (defun my/lisps-mode-hook ()
-        (paredit-mode t)
-        (rainbow-delimiters-mode t)
-        (highlight-parentheses-mode t)
-        )
-    #+END_SRC
+  (use-package rainbow-mode
+      :ensure t)
+  (use-package rainbow-delimiters
+      :ensure t)
+  (use-package highlight-parentheses
+      :ensure t)
+#+END_SRC
+
+And define a comme lisp hook for all LISP-related prog-modes, mostly
+about parentheses.
+
+#+BEGIN_SRC emacs-lisp
+  (defun my/lisps-mode-hook ()
+    (paredit-mode t)
+    (rainbow-delimiters-mode t)
+    (highlight-parentheses-mode t)
+    )
+#+END_SRC
 
 
 #+BEGIN_SRC emacs-lisp
