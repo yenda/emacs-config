@@ -895,9 +895,11 @@ This make tasks run in dired asynchronously. This is a big improvement for peopl
         (kill-region (region-beginning) (region-end))
         (backward-kill-word 1)))
 
-  (define-key key-translation-map [?\C-h] [?\C-?])
-  (global-set-key (kbd "<f1>") 'help-command)
-  (global-set-key (kbd "M-h") 'kill-region-or-backward-word)
+(define-key key-translation-map [?\C-h] [?\C-?])
+(global-set-key (kbd "C-?") 'help-command)
+(global-set-key (kbd "M-?") 'mark-paragraph)
+(global-set-key (kbd "M-h") 'kill-region-or-backward-word)
+
 #+END_SRC
 
 ** Server mode
@@ -1941,6 +1943,9 @@ Add date and load to the modeline
 
     And define a comme lisp hook for all LISP-related prog-modes, mostly about
     parentheses.
+  (add-hook 'paredit-mode-hook
+            (lambda ()
+              (local-unset-key (kbd "M-?"))))
 
     #+BEGIN_SRC emacs-lisp
       (defun my/lisps-mode-hook ()
