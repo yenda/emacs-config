@@ -1212,8 +1212,7 @@ Activate semantic mode and fuzzy matching
   ;;(semantic-mode 1)
   (global-set-key (kbd "C-x b") 'helm-mini)
   (setq helm-semantic-fuzzy-match t
-              helm-imenu-fuzzy-match    t)
-
+        helm-imenu-fuzzy-match    t)
 #+END_SRC
 
 *** helm-eshell
@@ -2156,12 +2155,6 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 
 =helm-firefox= to find bookmarks fast
 
-
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-firefox
-      :ensure t
-      :bind ("C-c m b" . helm-firefox-bookmarks))
-#+END_SRC
 
 * Mails
 
