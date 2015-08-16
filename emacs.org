@@ -1138,7 +1138,7 @@ We inverst =Tab= and =C-z= because we execute actions more often than we select 
             (global-set-key (kbd "C-c h") 'helm-command-prefix)
             (global-unset-key (kbd "C-x c"))
             (global-set-key (kbd "C-c h o") 'helm-occur)
-            (global-set-key (kbd "C-h SPC") 'helm-all-mark-rings)
+            (global-set-key (kbd "C-c SPC") 'helm-all-mark-rings)
             (global-set-key (kbd "C-c h x") 'helm-register)
             (setq helm-idle-delay 0.0
                   helm-input-idle-delay 0.01
