@@ -1174,6 +1174,13 @@ We inverst =Tab= and =C-z= because we execute actions more often than we select 
     Because it can be hard to remember all keybindings, let's use
     =helm-descbinds=.
 
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-descbinds
+      :ensure t
+      :config
+      (helm-descbinds-mode))
+#+END_SRC
+
 
 Adding wgrep to make =grep= buffers editable
 
