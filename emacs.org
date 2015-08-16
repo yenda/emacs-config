@@ -2181,131 +2181,50 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 =helm-firefox= to find bookmarks fast
 
 
-* Mails
 
 #+BEGIN_SRC emacs-lisp
-  ;; You need this to be able to list all labels in gmail
-
-  (setq gnus-ignored-newsgroups "")
-
-  ;; And this to configure gmail imap
-  (defvar smtp-accounts
-  '(
-  (ssl "yenda1@gmail.com" "smtp.gmail.com"
-  587 "mainaccount@gmail.com" "")
-  (ssl "eric@dvorsak.com" "smtp.dvorsak.fr"
-  587 "eric@dvorsak.com" "") ))
-
-
-
-  ;; My version of gnus in my Mac does not handle html messages
-  ;; correctly (the one in the netbook does, I guess it is a different
-  ;; version). The following will chose plaintext every time this is
-  ;; possible.
-
-  (setq mm-discouraged-alternatives '("text/html" "text/richtext"))
-
-
-  ;; And this to configure gmail imap
-
-  (setq gnus-select-method '(nnimap "gmail"
-  (nnimap-address "imap.gmail.com")
-  (nnimap-server-port 993)
-  (nnimap-stream ssl)))
-
-  ;; Now lets configure smtpmail.el with your name and functions to send
-  ;; mail using your smtp accounts by changing the from field
-
-  (require 'smtpmail)
-  (setq send-mail-function 'smtpmail-send-it
-  message-send-mail-function 'smtpmail-send-it
-  mail-from-style nil user-full-name "Eric Dvorsak"
-  smtpmail-debug-info t smtpmail-debug-verb t)
-
-  (defun set-smtp (mech server port user password)
-  "Set related SMTP variables for supplied parameters."
-  (setq smtpmail-smtp-server server smtpmail-smtp-service port
-  smtpmail-auth-credentials (list (list server port user
-  password)) smtpmail-auth-supported (list mech)
-  smtpmail-starttls-credentials nil)
-  (message "Setting SMTP server to `%s:%s' for user `%s'."
-  server port user))
-
-  (defun set-smtp-ssl (server port user password &optional key
-              cert)
-  "Set related SMTP and SSL variables for supplied parameters."
-  (setq starttls-use-gnutls t
-  starttls-gnutls-program "gnutls-cli"
-  starttls-extra-arguments nil smtpmail-smtp-server server
-  smtpmail-smtp-service port
-  smtpmail-auth-credentials (list (list server port user
-  password)) smtpmail-starttls-credentials (list (list
-  server port key cert)))
-  (message
-  "Setting SMTP server to `%s:%s' for user `%s'. (SSL
-  enabled.)" server port user))
-
-  (defun change-smtp ()
-  "Change the SMTP server according to the current from line."
-  (save-excursion
-  (loop with from = (save-restriction
-          (message-narrow-to-headers)
-          (message-fetch-field "from"))
-  for (auth-mech address . auth-spec) in smtp-accounts
-  when (string-match address from) do (cond
-  ((memq auth-mech '(cram-md5 plain login))
-  (return (apply 'set-smtp (cons auth-mech auth-spec))))
-  ((eql auth-mech 'ssl)
-  (return (apply 'set-smtp-ssl auth-spec)))
-  (t (error "Unrecognized SMTP auth. mechanism:
-  `%s'." auth-mech))) finally (error "Cannot infer SMTP
-  information."))))
-
-  ;; The previous function will complain if you fill the from field with
-  ;; an account not present in smtp-accounts.
-
-  (defvar %smtpmail-via-smtp (symbol-function 'smtpmail-via-smtp))
-
-  (defun smtpmail-via-smtp (recipient smtpmail-text-buffer)
-  (with-current-buffer smtpmail-text-buffer
-  (change-smtp))
-  (funcall (symbol-value '%smtpmail-via-smtp) recipient
-  smtpmail-text-buffer))
-
-  ;; This wraps send mail via smtp mail, to be able to send multiple
-  ;; messages with smtpmail.
-(setq mm-text-html-renderer 'w3m)
-(setq gnus-inhibit-images nil)
-
 #+END_SRC
 
-  Don't load if not on a computer where there is mails.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package elfeed-org
+      :ensure t)
+#+END_SRC
+
+* Mails
+
+  Note that mu needs to be installed on your machine for this to work
 
   #+BEGIN_SRC emacs-lisp
-    (defvar load-mail-setup (file-exists-p "~/desktop/mails/main"))
-    (when load-mail-setup
+    (add-to-list 'load-path "~/.emacs.d/mu4e")
+        (require 'mu4e)
+        (setq mu4e-sent-folder   "/sent")
+        (setq mu4e-drafts-folder "/drafts")
+        (setq mu4e-trash-folder  "/trash")
+
+        ;; smtp mail setting; these are the same that `gnus' uses.
+        (setq smtpmail-stream-type 'starttls
+              message-send-mail-function   'smtpmail-send-it
+              smtpmail-default-smtp-server "smtp.dvorsak.fr"
+              smtpmail-smtp-server         "smtp.dvorsak.fr"
+              smtpmail-local-domain        "dvorsak.fr")
+
+    (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-stream-type 'starttls
+        smtpmail-default-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-service 587)
+
+    (setq mu4e-get-mail-command "offlineimap")
+    (setq message-kill-buffer-on-exit t)
+
+    (use-package helm-mu :ensure t)
   #+END_SRC
 
-
-  Add mu4e to the load-path and load it.
-
-  #+BEGIN_SRC emacs-lisp
-    (add-to-list 'load-path "~/.guix-profile/share/emacs/site-lisp/mu4e")
-    (require-maybe 'mu4e)
-    (require-maybe 'helm-mu)
-  #+END_SRC
-
-  Let's /detect/ if mu is installed as mu-git or mu. It's a
-  workaround I need to use because of the name conflict between mu
-  and the mails-utils mu command.
-
-  #+BEGIN_SRC emacs-lisp
-    ;; (setq mu4e-mu-binary "/usr/local/bin/mu")
-  #+END_SRC
 
   Set the maildir, folders and stuff.
 
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (setq mu4e-maildir (expand-file-name "~/desktop/mails"))
     (setq mu4e-drafts-folder "/main/Drafts")
     (setq mu4e-sent-folder   "/main/Sent")
@@ -2316,20 +2235,20 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
   #+END_SRC
 
 
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (setq message-send-mail-function 'message-send-mail-with-sendmail
           sendmail-program "/usr/bin/msmtp"
           user-full-name "Eric Dvorsak")
   #+END_SRC
 
 
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     (add-to-list 'mu4e-view-actions '("retag" . mu4e-action-retag-message))
     (add-to-list 'mu4e-headers-actions '("retag" . mu4e-action-retag-message))
   #+END_SRC
 
 
-  #+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp :tangle no
     )
   #+END_SRC
 
