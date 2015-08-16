@@ -2393,13 +2393,62 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 #+END_SRC
 
 * Experimentations
+
+** Bongo
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package bongo
+      :ensure t
+      :bind ("<f7>" . bongo))
+#+END_SRC
+
 ** EMMS
 
 #+BEGIN_SRC emacs-lisp
-  (require 'emms-setup)
-  (emms-standard)
-  (emms-default-players)
+  (use-package emms
+      :ensure t
+      :config
+      (progn (require 'emms-setup)
+             (emms-standard)
+             (emms-default-players)
+             (setq emms-source-file-default-directory "mnt/Monster1/Music"
+                   emms-info-asynchronously t
+                   emms-show-format "♪ %s")))
+
 #+END_SRC
+
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (autoload 'emms-smart-browse "emms-browser.el" "Browse with EMMS" t)
+  (global-set-key [(f7)] 'emms-smart-browse)
+#+END_SRC
+
+When using dired, we configure the a key add the file to dired
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (require 'dired)
+  (define-key dired-mode-map (kbd "a") 'emms-play-dired)
+#+END_SRC
+
+*** helm-emms
+
+We use helm-emms but we don't want to have the streams polluting the
+buffer, lets redefine helm-emms function call to avoid that
+
+#+BEGIN_SRC emacs-lisp
+   (use-package helm-emms
+       :ensure t
+       :config
+       (defun helm-emms ()
+         "Preconfigured `helm' for emms sources."
+         (interactive)
+         (helm :sources '(helm-source-emms-files
+                          helm-source-emms-dired)
+               :buffer "*Helm Emms*")))
+#+END_SRC
+
+
 
 ** Desktop-save-mode
 
