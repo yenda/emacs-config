@@ -1078,7 +1078,9 @@ First let's define the default directory for the =org= files, the one to be adde
 
       (with-eval-after-load 'org
         (define-key org-mode-map (kbd "C-c s e") 'org-edit-src-code)
-        (define-key org-mode-map (kbd "C-c s i") 'my/org-insert-src-block))
+        (define-key org-mode-map (kbd "C-c s i") 'my/org-insert-src-block)
+        (define-key org-mode-map (kbd "C-c C-x i") 'org-clock-in)
+        (define)
     #+end_src
 
 ** Pomodoro
