@@ -1537,6 +1537,7 @@ Allows you to step though the git history of the file you’re currently editing
    #+BEGIN_SRC emacs-lisp
      (use-package helm-projectile
        :ensure t
+       :bind ("C-x p" . helm-projectile)
        :config (helm-projectile-on))
    #+END_SRC
 
