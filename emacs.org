@@ -874,7 +874,6 @@ That says it all, it's kind of a must.
         ;; commands
         (key-chord-define-global "RR"     'point-to-register)
         (key-chord-define-global "FF"     'jump-to-register)
-        (key-chord-define-global "dd"     'kill-whole-line)
         (key-chord-define-global "xx"     'er/expand-region)
         (key-chord-define-global "JJ"     'my/switch-to-previous-buffer)))
 #+END_SRC
