@@ -1181,6 +1181,22 @@ We inverst =Tab= and =C-z= because we execute actions more often than we select 
       (helm-descbinds-mode))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-firefox
+      :ensure t
+      :bind ("C-c m b" . helm-firefox-bookmarks))
+#+END_SRC
+
+I am using icecat so helm-firefox should lurk in the right directory
+instead of looking for firefox
+
+#+BEGIN_SRC emacs-lisp
+  (defcustom helm-firefox-default-directory "~/.mozilla/icecat/"
+  "The root directory containing firefox config.
+  On Mac OS X, probably set to \"~/Library/Application Support/Firefox/\"."
+  :group 'helm-firefox
+  :type 'string)
+#+END_SRC
 
 Adding wgrep to make =grep= buffers editable
 
