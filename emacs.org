@@ -2206,18 +2206,10 @@ Note that mu needs to be installed on your machine for this to work
       (setq mu4e-drafts-folder "/Drafts")
       (setq mu4e-trash-folder  "/Trash")
 
-      ;; smtp mail setting; these are the same that `gnus' uses.
-      (setq smtpmail-stream-type 'starttls
-            message-send-mail-function   'smtpmail-send-it
-            smtpmail-default-smtp-server "smtp.dvorsak.fr"
-            smtpmail-smtp-server         "smtp.dvorsak.fr"
-            smtpmail-local-domain        "dvorsak.fr")
-
   (setq message-send-mail-function 'smtpmail-send-it
       smtpmail-stream-type 'starttls
       smtpmail-default-smtp-server "smtp.dvorsak.fr"
-      smtpmail-smtp-server "smtp.dvorsak.fr"
-      smtpmail-smtp-service 587)
+      smtpmail-smtp-server "smtp.dvorsak.fr")
 
   (setq mu4e-get-mail-command "offlineimap")
   (setq mu4e-get-mail-command "offlineimap")
