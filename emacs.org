@@ -51,7 +51,7 @@ The [[file:init.el][Init file]] only loads orgmode and tangle this file into an 
 
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Eric Dvorsak"
-        user-mail-address "eric.dvorsak@gmail.com")
+        user-mail-address "eric@dvorsak.fr")
   (setq my-credentials-file "~/.emacs.d/private.el")
 #+END_SRC
 
