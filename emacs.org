@@ -2197,64 +2197,43 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 
 * Mails
 
-  Note that mu needs to be installed on your machine for this to work
+Note that mu needs to be installed on your machine for this to work
 
-  #+BEGIN_SRC emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/mu4e")
-        (require 'mu4e)
-        (setq mu4e-sent-folder   "/sent")
-        (setq mu4e-drafts-folder "/drafts")
-        (setq mu4e-trash-folder  "/trash")
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/mu4e")
+      (require 'mu4e)
+      (setq mu4e-sent-folder   "/Sent")
+      (setq mu4e-drafts-folder "/Drafts")
+      (setq mu4e-trash-folder  "/Trash")
 
-        ;; smtp mail setting; these are the same that `gnus' uses.
-        (setq smtpmail-stream-type 'starttls
-              message-send-mail-function   'smtpmail-send-it
-              smtpmail-default-smtp-server "smtp.dvorsak.fr"
-              smtpmail-smtp-server         "smtp.dvorsak.fr"
-              smtpmail-local-domain        "dvorsak.fr")
+      ;; smtp mail setting; these are the same that `gnus' uses.
+      (setq smtpmail-stream-type 'starttls
+            message-send-mail-function   'smtpmail-send-it
+            smtpmail-default-smtp-server "smtp.dvorsak.fr"
+            smtpmail-smtp-server         "smtp.dvorsak.fr"
+            smtpmail-local-domain        "dvorsak.fr")
 
-    (setq message-send-mail-function 'smtpmail-send-it
-        smtpmail-stream-type 'starttls
-        smtpmail-default-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-smtp-service 587)
+  (setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-stream-type 'starttls
+      smtpmail-default-smtp-server "smtp.dvorsak.fr"
+      smtpmail-smtp-server "smtp.dvorsak.fr"
+      smtpmail-smtp-service 587)
 
-    (setq mu4e-get-mail-command "offlineimap")
-    (setq message-kill-buffer-on-exit t)
+  (setq mu4e-get-mail-command "offlineimap")
+  (setq mu4e-get-mail-command "offlineimap")
+  (setq mu4e-html2text-command "html2text")
+  (setq message-kill-buffer-on-exit t)
+  (setq mu4e-compose-signature-auto-include nil)
+  (use-package helm-mu :ensure t)
+#+END_SRC
 
-    (use-package helm-mu :ensure t)
-  #+END_SRC
+#+RESULTS:
 
+Add a shortcut
 
-  Set the maildir, folders and stuff.
-
-  #+BEGIN_SRC emacs-lisp :tangle no
-    (setq mu4e-maildir (expand-file-name "~/desktop/mails"))
-    (setq mu4e-drafts-folder "/main/Drafts")
-    (setq mu4e-sent-folder   "/main/Sent")
-    (setq mu4e-trash-folder  "/main/Trash")
-
-    (setq mu4e-get-mail-command "offlineimap")
-    (setq mu4e-html2text-command "html2text")
-  #+END_SRC
-
-
-  #+BEGIN_SRC emacs-lisp :tangle no
-    (setq message-send-mail-function 'message-send-mail-with-sendmail
-          sendmail-program "/usr/bin/msmtp"
-          user-full-name "Eric Dvorsak")
-  #+END_SRC
-
-
-  #+BEGIN_SRC emacs-lisp :tangle no
-    (add-to-list 'mu4e-view-actions '("retag" . mu4e-action-retag-message))
-    (add-to-list 'mu4e-headers-actions '("retag" . mu4e-action-retag-message))
-  #+END_SRC
-
-
-  #+BEGIN_SRC emacs-lisp :tangle no
-    )
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f1>") 'mu4e)
+#+END_SRC
 
 * Irc
 
@@ -2439,12 +2418,6 @@ Practice touch/speed typing in emacs
 
   (require 'ensime)
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-#+END_SRC
-
-** Terminal
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f1>") 'eshell)
 #+END_SRC
 
 ** Org reveal
