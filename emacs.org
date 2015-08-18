@@ -169,12 +169,13 @@ Here I set up git diffs and buffer position in the fringe.
   (load-theme 'monokai t)
 #+END_SRC
 
-*** Font
+*** Fonts
 
 #+BEGIN_SRC emacs-lisp
+(when (member "Inconsolata" (font-family-list))
   (set-default-font "Inconsolata-12")
   (set-frame-font "Inconsolata-12")
-  (set-face-attribute 'default nil :family "Inconsolata" :height 110)
+  (set-face-attribute 'default nil :family "Inconsolata" :height 110))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle no
