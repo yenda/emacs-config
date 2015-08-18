@@ -2225,6 +2225,15 @@ Add a shortcut
   (global-set-key (kbd "<f1>") 'mu4e)
 #+END_SRC
 
+
+#+BEGIN_SRC emacs-lisp
+  (defvar mu4e-view-actions
+    '(("capture message" . mu4e-action-capture-message)
+      ("view as pdf"     . mu4e-action-view-as-pdf)
+      ("git apply mbox" . mu4e-action-git-apply-mbox)))
+#+END_SRC
+
+
 * Irc
 
 #+BEGIN_SRC emacs-lisp
