@@ -2213,7 +2213,6 @@ Note that mu needs to be installed on your machine for this to work
       smtpmail-smtp-server "smtp.dvorsak.fr")
 
   (setq mu4e-get-mail-command "offlineimap")
-  (setq mu4e-get-mail-command "offlineimap")
   (setq mu4e-html2text-command "html2text")
   (setq message-kill-buffer-on-exit t)
   (setq mu4e-compose-signature-auto-include nil)
