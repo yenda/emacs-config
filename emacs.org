@@ -2219,8 +2219,6 @@ Note that mu needs to be installed on your machine for this to work
   (use-package helm-mu :ensure t)
 #+END_SRC
 
-#+RESULTS:
-
 Add a shortcut
 
 #+BEGIN_SRC emacs-lisp
