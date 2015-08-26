@@ -1103,6 +1103,7 @@ First let's define the default directory for the =org= files, the one to be adde
    (add-hook 'LaTeX-mode-hook 'visual-line-mode)
    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
    (ispell-change-dictionary "francais")
+   (setq flyspell-default-dictionary "francais")
    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 #+END_SRC
 
