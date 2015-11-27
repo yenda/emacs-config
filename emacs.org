@@ -1095,7 +1095,7 @@ First let's define the default directory for the =org= files, the one to be adde
 * Latex
 
 #+BEGIN_SRC emacs-lisp
-   (require 'tex)
+(require 'tex)
    (setq TeX-auto-save t)
    (setq TeX-parse-self t)
    (setq-default TeX-master nil)
@@ -1208,22 +1208,6 @@ We inverst =Tab= and =C-z= because we execute actions more often than we select 
       (helm-descbinds-mode))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-firefox
-      :ensure t
-      :bind ("C-c m b" . helm-firefox-bookmarks))
-#+END_SRC
-
-I am using icecat so helm-firefox should lurk in the right directory
-instead of looking for firefox
-
-#+BEGIN_SRC emacs-lisp
-  (defcustom helm-firefox-default-directory "~/.mozilla/icecat/"
-  "The root directory containing firefox config.
-  On Mac OS X, probably set to \"~/Library/Application Support/Firefox/\"."
-  :group 'helm-firefox
-  :type 'string)
-#+END_SRC
 
 Adding wgrep to make =grep= buffers editable
 
@@ -1254,12 +1238,12 @@ First let's enable pcomplete-extension to have better experience with eshell com
 And =bash-completion= to make things even better
 
 
-# #+BEGIN_SRC emacs-lisp
-#   (use-package bash-completion
-#     :ensure t
-#     :config
-#     (bash-completion-setup))
-# #+END_SRC
+#+BEGIN_SRC emacs-lisp
+   (use-package bash-completion
+     :ensure t
+     :config
+     (bash-completion-setup))
+#+END_SRC
 
 
 #+BEGIN_SRC emacs-lisp
@@ -1600,44 +1584,6 @@ Allows you to step though the git history of the file you’re currently editing
       (setq compilation-scroll-output t)
     #+END_SRC
 
-** Provided configuration
-
-   I'm managing my configurations using [[https://github.com/RichiH/vcsh][vcsh]] and [[http://myrepos.branchable.com/][myrepos]], like [[https://github.com/vdemeester/vcsh-home#how-it-is-supposed-to-work][that]]. I have a lot
-   of different configuration repository ([[https://github.com/search?q%3Duser%253Avdemeester%2Bconfig][here]]) and the way I use it
-   is I get only the one I need on the computer I need. This means I
-   don't always want the =ruby-config= or the =go-config= on my
-   computers. And this means that I don't need these part in my emacs
-   configuration as well ; it even might need some dependencies that I
-   wouldn't have without the =*-config= repository.
-
-   So, each repository will come (or not =:-P=) with a part of emacs
-   configuration, that will be load by the following code. They will
-   put their code into =$HOME/.emacs.d/provided/=.
-
-
-   #+BEGIN_SRC emacs-lisp
-     ;; The folder is by default $HOME/.emacs.d/provided
-     (setq user-emacs-provided-directory (concat user-emacs-directory "provided/"))
-     ;; Regexp to find org files in the folder
-     (setq provided-configuration-file-regexp "\\`[^.].*\\.org\\'")
-     ;; Define the function
-     (defun load-provided-configuration (dir)
-       "Load org file from =use-emacs-provided-directory= as configuration with org-babel"
-       (unless (file-directory-p dir) (error "Not a directory '%s'" dir))
-       (dolist (file (directory-files dir nil provided-configuration-file-regexp nil) nil)
-         (unless (member file '("." ".."))
-           (let ((file (concat dir file)))
-             (unless (file-directory-p file)
-               (message "loading file %s" file)
-               (org-babel-load-file file)
-               )
-             ))
-         )
-       )
-     ;; Load it
-     (load-provided-configuration user-emacs-provided-directory)
-   #+END_SRC
-
 ** Linux related modes
 *** Archlinux
     I'm using [[http://archlinux.org][Archlinux]] on my personnal computers and I maintain a few packages
@@ -1776,7 +1722,7 @@ Add date and load to the modeline
      (defvar mode-line-cleaner-alist
        `((auto-complete-mode         . "")
          (yas-minor-mode             . "")
-         (paredit-mode               . " Φ")
+         (paredit-mode               . "")
          (eldoc-mode                 . "")
          (abbrev-mode                . "")
          (undo-tree-mode             . "")
@@ -1916,7 +1862,7 @@ Add date and load to the modeline
 
 ** Lisp
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;  (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (setq inferior-lisp-program "/bin/sbcl"
         lisp-indent-function 'common-lisp-indent-function
@@ -1992,6 +1938,7 @@ Let's install some LISP common useful modes.
       :ensure t)
   (use-package rainbow-delimiters
       :ensure t)
+
   (use-package highlight-parentheses
       :ensure t)
 #+END_SRC
@@ -2000,11 +1947,14 @@ And define a comme lisp hook for all LISP-related prog-modes, mostly
 about parentheses.
 
 #+BEGIN_SRC emacs-lisp
-  (defun my/lisps-mode-hook ()
-    (paredit-mode t)
-    (rainbow-delimiters-mode t)
-    (highlight-parentheses-mode t)
-    )
+    (defun my/lisps-mode-hook ()
+      (paredit-mode t)
+      (rainbow-delimiters-mode t)
+      (highlight-parentheses-mode t)
+      (show-paren-mode t)
+      )
+
+  (set-face-attribute 'show-paren-match t :background "dim gray" :foreground "red" :inverse-video t :weight 'normal)
 #+END_SRC
 
 
@@ -2108,6 +2058,18 @@ Hack from mark-weaver on #guix
          :ensure t)
      #+END_SRC
 
+
+#+BEGIN_SRC emacs-lisp
+  (require 'clj-refactor)
+
+  (defun my-clojure-mode-hook ()
+      (clj-refactor-mode 1)
+      (yas-minor-mode 1) ; for adding require/use/import
+      (cljr-add-keybindings-with-prefix "C-c C-m"))
+
+  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+#+END_SRC
+
 ** SQL
 
    Emacs is really more than an editor. The SQL mode is quick cool to
@@ -2198,125 +2160,102 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
       :ensure t)
 #+END_SRC
 
-* Mails
-
-Note that mu needs to be installed on your machine for this to work
-
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/mu4e")
-      (require 'mu4e)
-      (setq mu4e-sent-folder   "/Sent")
-      (setq mu4e-drafts-folder "/Drafts")
-      (setq mu4e-trash-folder  "/Trash")
-
-  (setq message-send-mail-function 'smtpmail-send-it
-      smtpmail-stream-type 'starttls
-      smtpmail-default-smtp-server "smtp.dvorsak.fr"
-      smtpmail-smtp-server "smtp.dvorsak.fr")
-
-  (setq mu4e-get-mail-command "offlineimap")
-  (setq mu4e-html2text-command "html2text")
-  (setq message-kill-buffer-on-exit t)
-  (setq mu4e-compose-signature-auto-include nil)
-  (use-package helm-mu :ensure t)
-#+END_SRC
-
-Add a shortcut
-
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f1>") 'mu4e)
-#+END_SRC
-
-
-#+BEGIN_SRC emacs-lisp
-  (defvar mu4e-view-actions
-    '(("capture message" . mu4e-action-capture-message)
-      ("view as pdf"     . mu4e-action-view-as-pdf)
-      ("git apply mbox" . mu4e-action-git-apply-mbox)))
-#+END_SRC
-
-
 * Irc
 
 #+BEGIN_SRC emacs-lisp
-      (defun my-nickserv-password (_)
-        (with-temp-buffer
-          (insert-file-contents-literally my-credentials-file)
-          (plist-get (read (buffer-string)) :nickserv-password)))
+  (defun my-nickserv-password (_)
+    (with-temp-buffer
+      (insert-file-contents-literally my-credentials-file)
+      (plist-get (read (buffer-string)) :nickserv-password)))
 
-      (require 'circe)
-    (require 'helm-circe)
-      (setq circe-network-options
-            `(("Freenode"
-               :nick "yenda"
-               :channels ("#emacs"
-                          "#emacs-circe"
-                          "#lisp"
-                          "#python"
-                          "libreplanet"
-                          "#mesos" "#ansible" "#guix" "#trisquel" "#leiningen" "#clojure")
-               :nickserv-password my-nickserv-password)))
+  (defun my-slack-password (_)
+    (with-temp-buffer
+      (insert-file-contents-literally my-credentials-file)
+      (plist-get (read (buffer-string)) :slack-pass)))
 
-      (setq tracking-ignored-buffers '("#ansible" "#python" "mesos" "clojure" "leiningen" "trisquel" "emacs" "lisp"))
+  (require 'circe)
+  (require 'helm-circe)
+  (setq circe-network-options
+        `(("Freenode"
+           :nick "yenda"
+           :channels ("#emacs"
+                      "#emacs-circe"
+                      "#lisp"
+                      "#python"
+                      "libreplanet"
+                      "#mesos" "#ansible" "#guix" "#trisquel" "#leiningen" "#clojure")
+           :nickserv-password my-nickserv-password)
+          ;; ("Slack"
+          ;;  :tls t
+          ;;  :host "zenika.irc.slack.com"
+          ;;  :port 6667
+          ;;  :nick "eric"
+          ;;  :pass "zenika.A0g60XK5ecFV4GMHirMn"
+          ;;  :channels
+          ;;  ("#general"))
+        ))
 
-      (defun circe-network-connected-p (network)
-        "Return non-nil if there's any Circe server-buffer whose
-      `circe-server-netwok' is NETWORK."
-        (catch 'return
-          (dolist (buffer (circe-server-buffers))
-            (with-current-buffer buffer
-              (if (string= network circe-server-network)
-                  (throw 'return t))))))
+  (setq tracking-ignored-buffers '("#ansible" "#python" "mesos" "clojure" "leiningen" "trisquel" "emacs" "lisp"))
 
-      (defun circe-maybe-connect (network)
-        "Connect to NETWOR if it's not already connected"
-        (if (not (circe-network-connected-p network))
-            (circe network)))
+  (defun circe-network-connected-p (network)
+    "Return non-nil if there's any Circe server-buffer whose
+  `circe-server-netwok' is NETWORK."
+    (catch 'return
+      (dolist (buffer (circe-server-buffers))
+        (with-current-buffer buffer
+          (if (string= network circe-server-network)
+              (throw 'return t))))))
 
-      (defun helm-circe-all ()
-        "Custom helm buffer for circe channel and server buffers only."
-        (interactive)
-        (let ((sources
-               '(helm-circe/circe-new-activity-source
-                 helm-circe/circe-channel-buffer-source
-                 helm-circe/circe-query-buffer-source
-                 helm-circe/circe-server-buffer-source)))
-          (helm :sources sources
-                :buffer "*helm-circe*")))
+  (defun circe-maybe-connect (network)
+    "Connect to NETWOR if it's not already connected"
+    (if (not (circe-network-connected-p network))
+        (circe network)))
 
-      (defun irc ()
-        "Connect to IRC"
-        (interactive)
-        (circe-maybe-connect "Freenode"))
+  (defun helm-circe-all ()
+    "Custom helm buffer for circe channel and server buffers only."
+    (interactive)
+    (let ((sources
+           '(helm-circe/circe-new-activity-source
+             helm-circe/circe-channel-buffer-source
+             helm-circe/circe-query-buffer-source
+             helm-circe/circe-server-buffer-source)))
+      (helm :sources sources
+            :buffer "*helm-circe*")))
 
-      (defun yenda/circe-connect-or-helm ()
-        (interactive)
-        (if (car (circe-server-buffers))
-            (helm-circe-all)
-            (irc)))
+  (defun irc ()
+    "Connect to IRC"
+    (interactive)
+    ;(circe-maybe-connect "Slack")
+    (circe-maybe-connect "Freenode"))
 
-      (global-set-key (kbd "<f8>") (lambda() (interactive) (yenda/circe-connect-or-helm)))
+  (defun yenda/circe-connect-or-helm ()
+    (interactive)
+    (if (car (circe-server-buffers))
+        (helm-circe-all)
+        (irc)))
 
-      (setq helm-mode-no-completion-in-region-in-modes
-            '(circe-channel-mode
-              circe-query-mode
-              circe-server-mode))
+  (global-set-key (kbd "<f8>") (lambda() (interactive) (yenda/circe-connect-or-helm)))
 
-      (setq circe-reduce-lurker-spam t)
+  (setq helm-mode-no-completion-in-region-in-modes
+        '(circe-channel-mode
+          circe-query-mode
+          circe-server-mode))
 
-      (require 'lui-autopaste)
-      (add-hook 'circe-channel-mode-hook 'enable-lui-autopaste)
+  (setq circe-reduce-lurker-spam t)
 
-      (add-hook 'lui-mode-hook 'my-lui-setup)
-      (defun my-lui-setup ()
-        (setq
-         fringes-outside-margins t
-         left-margin-width 6
-         lui-time-stamp-position 'left-margin
-         lui-time-stamp-format "%H:%M"
-         lui-fill-type nil
-         word-wrap t
-         wrap-prefix "    "))
+  (require 'lui-autopaste)
+  (add-hook 'circe-channel-mode-hook 'enable-lui-autopaste)
+
+  (add-hook 'lui-mode-hook 'my-lui-setup)
+  (defun my-lui-setup ()
+    (setq
+     fringes-outside-margins t
+     left-margin-width 6
+     lui-time-stamp-position 'left-margin
+     lui-time-stamp-format "%H:%M"
+     lui-fill-type nil
+     word-wrap t
+     wrap-prefix "    "))
 
 #+END_SRC
 
@@ -2334,53 +2273,6 @@ Add a shortcut
         (setq bongo-default-directory "/mnt/Monster1/Music/")
         )
 #+END_SRC
-
-** EMMS
-
-#+BEGIN_SRC emacs-lisp
-  (use-package emms
-      :ensure t
-      :config
-      (progn (require 'emms-setup)
-             (emms-standard)
-             (emms-default-players)
-             (setq emms-source-file-default-directory "mnt/Monster1/Music"
-                   emms-info-asynchronously t
-                   emms-show-format "♪ %s")))
-
-#+END_SRC
-
-
-#+BEGIN_SRC emacs-lisp :tangle no
-  (autoload 'emms-smart-browse "emms-browser.el" "Browse with EMMS" t)
-  (global-set-key [(f7)] 'emms-smart-browse)
-#+END_SRC
-
-When using dired, we configure the a key add the file to dired
-
-#+BEGIN_SRC emacs-lisp :tangle no
-  (require 'dired)
-  (define-key dired-mode-map (kbd "a") 'emms-play-dired)
-#+END_SRC
-
-*** helm-emms
-
-We use helm-emms but we don't want to have the streams polluting the
-buffer, lets redefine helm-emms function call to avoid that
-
-#+BEGIN_SRC emacs-lisp
-   (use-package helm-emms
-       :ensure t
-       :config
-       (defun helm-emms ()
-         "Preconfigured `helm' for emms sources."
-         (interactive)
-         (helm :sources '(helm-source-emms-files
-                          helm-source-emms-dired)
-               :buffer "*Helm Emms*")))
-#+END_SRC
-
-
 
 ** Desktop-save-mode
 
