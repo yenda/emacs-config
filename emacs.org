@@ -1437,7 +1437,7 @@ Allows you to step though the git history of the file you’re currently editing
    Let's install and use [[http://www.emacswiki.org/emacs/MultiTerm][multi-term]], which is a cool addition to =term.el=.
 
    #+BEGIN_SRC emacs-lisp
-     
+
 
           (use-package multi-term
             :ensure t
@@ -1967,7 +1967,7 @@ Add date and load to the modeline
 #+END_SRC
 
 #+RESULTS:
-   
+
 ** Lua
 
    #+BEGIN_SRC emacs-lisp
@@ -2107,6 +2107,20 @@ Hack from mark-weaver on #guix
        (use-package cider
          :ensure t)
      #+END_SRC
+
+*** Clojure script
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package inf-clojure
+      :ensure t)
+
+  (defun figwheel-repl ()
+    (interactive)
+    (run-clojure "lein figwheel"))
+
+  (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode)
+#+END_SRC
 
 ** SQL
 
@@ -2415,7 +2429,7 @@ Practice touch/speed typing in emacs
   (setenv "PATH" (concat "/path/to/sbt/bin:" (getenv "PATH")))
   (setenv "PATH" (concat "/path/to/scala/bin:" (getenv "PATH")))
     ;;
-    ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance: 
+    ;; On Macs, it might be a safer bet to use exec-path instead of PATH, for instance:
   (setq exec-path (append exec-path '("/usr/local/bin")))
 
   (require 'ensime)
