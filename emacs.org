@@ -1440,6 +1440,14 @@ Allows you to step though the git history of the file you’re currently editing
       :ensure t)
 #+END_SRC
 
+** Json
+
+
+#+BEGIN_SRC emacs-lisp
+  (use-package json-reformat
+    :ensure t)
+#+END_SRC
+
 ** Flyspell
 
    #+BEGIN_QUOTE
