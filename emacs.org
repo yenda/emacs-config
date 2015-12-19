@@ -1868,36 +1868,6 @@ Add date and load to the modeline
     (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 #+END_SRC
 
-** Lisp
-
-#+BEGIN_SRC emacs-lisp :tangle no
-;  (load (expand-file-name "~/quicklisp/slime-helper.el"))
-  (setq inferior-lisp-program "/bin/sbcl"
-        lisp-indent-function 'common-lisp-indent-function
-        slime-complete-symbol-function 'slime-fuzzy-complete-symbol
-        slime-startup-animation nil)
-  (add-to-list 'load-path "/usr/share/emacs/site-lisp/slime/")
-  (require 'slime)
-  (slime-setup '(slime-fancy))
-  (slime-setup '(slime-company))
-
-  (show-paren-mode 1)
-  (setq show-paren-style 'expression)
-
-  (global-set-key [(f12)]
-                  '(lambda ()
-                     (interactive)
-                     (let ((browse-url-browser-function
-                              'eww-browse-url)
-                             (common-lisp-hyperspec-root
-                              "file:///home/yenda/lisp/Hyperspec/")
-                                     (common-lisp-hyperspec-symbol-table
-                               (concat common-lisp-hyperspec-root
-                                           "Data/Map_Sym.txt")))
-                       (common-lisp-hyperspec
-                          (thing-at-point 'symbol)))))
-#+END_SRC
-
 ** Python
 
 #+BEGIN_SRC emacs-lisp
@@ -1990,6 +1960,36 @@ about parentheses.
                   (eldoc-mode 1))
                 )
     #+END_SRC
+
+*** Common Lisp
+
+#+BEGIN_SRC emacs-lisp :tangle no
+;  (load (expand-file-name "~/quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "/bin/sbcl"
+        lisp-indent-function 'common-lisp-indent-function
+        slime-complete-symbol-function 'slime-fuzzy-complete-symbol
+        slime-startup-animation nil)
+  (add-to-list 'load-path "/usr/share/emacs/site-lisp/slime/")
+  (require 'slime)
+  (slime-setup '(slime-fancy))
+  (slime-setup '(slime-company))
+
+  (show-paren-mode 1)
+  (setq show-paren-style 'expression)
+
+  (global-set-key [(f12)]
+                  '(lambda ()
+                     (interactive)
+                     (let ((browse-url-browser-function
+                              'eww-browse-url)
+                             (common-lisp-hyperspec-root
+                              "file:///home/yenda/lisp/Hyperspec/")
+                                     (common-lisp-hyperspec-symbol-table
+                               (concat common-lisp-hyperspec-root
+                                           "Data/Map_Sym.txt")))
+                       (common-lisp-hyperspec
+                          (thing-at-point 'symbol)))))
+#+END_SRC
 
 *** Scheme
 
