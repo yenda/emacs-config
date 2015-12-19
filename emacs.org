@@ -2187,20 +2187,12 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
                       "#emacs-circe"
                       "#lisp"
                       "#python"
-                      "libreplanet"
-                      "#mesos" "#ansible" "#guix" "#trisquel" "#leiningen" "#clojure")
+                      "#libreplanet"
+                      "#mesos" "#ansible" "#guix" "#trisquel" "#leiningen" "#clojure" "#clojurescript" "#hoplon" "#clojure-emacs")
            :nickserv-password my-nickserv-password)
-          ;; ("Slack"
-          ;;  :tls t
-          ;;  :host "zenika.irc.slack.com"
-          ;;  :port 6667
-          ;;  :nick "eric"
-          ;;  :pass "zenika.A0g60XK5ecFV4GMHirMn"
-          ;;  :channels
-          ;;  ("#general"))
         ))
 
-  (setq tracking-ignored-buffers '("#ansible" "#python" "mesos" "clojure" "leiningen" "trisquel" "emacs" "lisp"))
+  (setq tracking-ignored-buffers '("#ansible" "#python" "#mesos" "#guix" "#leiningen" "#trisquel" "#emacs" "#lisp"))
 
   (defun circe-network-connected-p (network)
     "Return non-nil if there's any Circe server-buffer whose
@@ -2265,41 +2257,12 @@ It would be nice to manage to get some auto-completion feature but I couldn't fi
 #+END_SRC
 
 * Experimentations
-
-** Bongo
-
-[[https://github.com/dbrock/bongo][Bongo]] is a really nice and simple music player for emacs.
-
-#+BEGIN_SRC emacs-lisp
-    (use-package bongo
-        :ensure t
-        :bind ("<f7>" . bongo-playlist)
-        :config
-        (setq bongo-default-directory "/mnt/Monster1/Music/")
-        )
-#+END_SRC
-
 ** Desktop-save-mode
 
 I want to keep the state of my Emacs between sessions, i.e keep the same opened buffers.
 
 #+BEGIN_SRC emacs-lisp
 ;;(desktop-save-mode 1)
-#+END_SRC
-
-** Typing
-
-Practice touch/speed typing in emacs
-
-#+BEGIN_SRC emacs-lisp
-  (use-package speed-type
-      :ensure t)
-#+END_SRC
-
-** Load config file
-
-#+BEGIN_SRC emacs-lisp :tangle no
-;  (find-file "~/.emacs.d/emacs.org")
 #+END_SRC
 
 ** Scala : ensime
@@ -2318,11 +2281,11 @@ Practice touch/speed typing in emacs
   (require 'ensime)
   (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
 #+END_SRC
-
+   
 ** Org reveal
 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (load-library "ox-reveal")
 #+END_SRC
 
